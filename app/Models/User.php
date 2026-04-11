@@ -39,6 +39,27 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    // Helper methods
+    public function isAdmin()
+    {
+        return $this->user_type === 'admin';
+    }
+
+    public function isManager()
+    {
+        return $this->user_type === 'manager';
+    }
+
+    public function isUser()
+    {
+        return $this->user_type === 'user';
+    }
+
     /**
      * Get the attributes that should be cast.
      *
