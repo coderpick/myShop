@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CategoryStoreRequest;
+use App\Models\Category;
+use Devrabiul\ToastMagic\Facades\ToastMagic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -12,7 +16,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index');
+        $categories = Category::get();
+
+        return view('admin.category.index', compact('categories'));
     }
 
     /**
@@ -20,15 +26,38 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.category.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryStoreRequest $request)
     {
-        //
+
+        if ($request->validated()) {
+
+            //  Category::create($request->all());
+
+            /*         $category = new Category();
+                    $category->name = $request->name;
+                    $category->slug = $request->slug;
+                    $category->save(); */
+
+            /*    Category::create([
+                   'name' => $request->name,
+                   'slug' => Str::slug($request->slug),
+                   'icon' => $request->icon,
+                   'is_show_in_menu' => $request->is_show_in_menu,
+               ]); */
+
+            Category::saveCategory($request);
+
+            ToastMagic::success('Category Successfully Created');
+
+            return redirect()->route('admin.category.index');
+        }
+
     }
 
     /**
@@ -44,7 +73,9 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return view('admin.category.edit', compact('category'));
     }
 
     /**
@@ -52,7 +83,25 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:categories,slug,'.$id,
+            'icon' => 'nullable',
+            'is_show_in_menu' => 'nullable|boolean',
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+            'slug' => Str::slug($request->slug),
+            'icon' => $request->icon,
+            'is_show_in_menu' => $request->is_show_in_menu,
+        ]);
+
+        ToastMagic::success('Category Successfully Updated');
+
+        return redirect()->route('admin.category.index');
     }
 
     /**
@@ -60,6 +109,12 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        // $category = Category::where('id', $id)->first();
+
+        $category->delete();
+        ToastMagic::success('Category Successfully Deleted');
+
+        return redirect()->route('admin.category.index');
     }
 }

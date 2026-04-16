@@ -1,25 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-admin-theme="light">
 
 <head>
     @include('layouts.backend.partials.head')
 </head>
 
 <body>
-    <div id="overlay" class="overlay"></div>
-    <!-- TOPBAR -->
-    @include('layouts.backend.partials.header')
 
-    <!-- SIDEBAR -->
-    @include('layouts.backend.partials.sidbar')
+    {{-- SIDEBAR OVERLAY --}}
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- MAIN CONTENT -->
-    <main id="content" class="content py-10">
-        @yield('content')
-    </main>
+    <div class="admin-wrapper">
 
+        {{-- SIDEBAR --}}
+        @include('layouts.backend.partials.sidebar')
+
+
+
+        {{-- MAIN CONTENT --}}
+        <div class="admin-main" id="adminMain">
+
+            {{-- HEADER --}}
+            @include('layouts.backend.partials.header')
+
+            {{-- Page CONTENT --}}
+
+            @yield('content')
+
+            {{-- FOOTER --}}
+            @include('layouts.backend.partials.footer')
+
+        </div>
+    </div>
+
+    {{-- script --}}
     @include('layouts.backend.partials.script')
 
+    {!! ToastMagic::scripts() !!}
 </body>
 
 </html>

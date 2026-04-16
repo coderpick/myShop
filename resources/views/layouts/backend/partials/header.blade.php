@@ -1,119 +1,119 @@
- <nav id="topbar" class="navbar bg-white border-bottom fixed-top topbar px-3">
-     <button id="toggleBtn" class="d-none d-lg-inline-flex btn btn-light btn-icon btn-sm ">
-         <i class="ti ti-layout-sidebar-left-expand"></i>
-     </button>
+         <header class="admin-topbar" id="adminTopbar">
+             <div class="topbar-left">
+                 <!-- Sidebar Toggle Button -->
+                 <button class="sidebar-toggle" id="sidebarToggle">
+                     <i class="bi bi-list"></i>
+                 </button>
 
-     <!-- MOBILE -->
-     <button id="mobileBtn" class="btn btn-light btn-icon btn-sm d-lg-none me-2">
-         <i class="ti ti-layout-sidebar-left-expand"></i>
-     </button>
-     <div>
-         <!-- Navbar nav -->
-         <ul class="list-unstyled d-flex align-items-center mb-0 gap-1">
-             <!-- Pages link -->
-
-             <!-- Bell icon -->
-             <li>
-                 <a class="position-relative btn-icon btn-sm btn-light btn rounded-circle" data-bs-toggle="dropdown"
-                     aria-expanded="false" href="#" role="button">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                         stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bell">
-                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                         <path
-                             d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
-                         <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
-                     </svg>
-                     <span
-                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger mt-2 ms-n2">
-                         2
-                         <span class="visually-hidden">unread messages</span>
-                     </span>
-                 </a>
-                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-md p-0">
-                     <ul class="list-unstyled p-0 m-0">
-                         <li class="p-3 border-bottom ">
-                             <div class="d-flex gap-3">
-                                 <img src="./assets/images/avatar/avatar-1.jpg" alt=""
-                                     class="avatar avatar-sm rounded-circle" />
-                                 <div class="flex-grow-1 small">
-                                     <p class="mb-0">New order received</p>
-                                     <p class="mb-1">Order #12345 has been placed</p>
-                                     <div class="text-secondary">5 minutes ago</div>
-                                 </div>
-                             </div>
-                         </li>
-                         <li class="p-3 border-bottom ">
-                             <div class="d-flex gap-3">
-                                 <img src="./assets/images/avatar/avatar-4.jpg" alt=""
-                                     class="avatar avatar-sm rounded-circle" />
-                                 <div class="flex-grow-1 small">
-                                     <p class="mb-0">New user registered</p>
-                                     <p class="mb-1">User @john_doe has signed up</p>
-                                     <div class="text-secondary">30 minutes ago</div>
-                                 </div>
-                         </li>
-
-                         <li class="p-3 border-bottom">
-                             <div class="d-flex gap-3">
-                                 <img src="./assets/images/avatar/avatar-2.jpg" alt=""
-                                     class="avatar avatar-sm rounded-circle" />
-                                 <div class="flex-grow-1 small">
-                                     <p class="mb-0">Payment confirmed</p>
-                                     <p class="mb-1">Payment of $299 has been received</p>
-                                     <div class="text-secondary">1 hour ago</div>
-                                 </div>
-                             </div>
-                         </li>
-                         <li class="px-4 py-3 text-center">
-                             <a href="#" class="text-primary ">View all notifications</a>
-                         </li>
-                     </ul>
+                 <!-- Search -->
+                 <div class="topbar-search d-none d-md-block">
+                     <i class="bi bi-search search-icon"></i>
+                     <input type="text" placeholder="Search anything...">
                  </div>
-             </li>
-             <!-- Dropdown -->
-             <li class="ms-3 dropdown">
-                 <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     <img src="./assets/images/avatar/avatar-1.jpg" alt=""
-                         class="avatar avatar-sm rounded-circle" />
-                 </a>
-                 <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 200px;">
-                     <div>
-                         <div class="d-flex gap-3 align-items-center border-dashed border-bottom px-3 py-3">
-                             <img src="./assets/images/avatar/avatar-1.jpg" alt=""
-                                 class="avatar avatar-md rounded-circle" />
+             </div>
+
+             <div class="topbar-right">
+                 <!-- Dark Mode Toggle -->
+                 <button class="topbar-btn" id="themeToggle" title="Toggle Theme">
+                     <i class="bi bi-moon-fill"></i>
+                 </button>
+
+                 <!-- Notifications -->
+                 <div class="dropdown">
+                     <button class="topbar-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                         <i class="bi bi-bell"></i>
+                         <span class="badge-count">5</span>
+                     </button>
+                     <div class="dropdown-menu dropdown-menu-end notification-dropdown shadow-lg">
+                         <div class="notification-header">
+                             <h6>Notifications</h6>
+                             <a href="#" class="text-primary small">Mark all read</a>
+                         </div>
+                         <div class="notification-item unread">
+                             <div class="notif-icon bg-primary bg-opacity-10 text-primary">
+                                 <i class="bi bi-cart-check"></i>
+                             </div>
                              <div>
-                                 <h4 class="mb-0 small">Shrina Tesla</h4>
-                                 <p class="mb-0  small">@imshrina</p>
+                                 <div class="notif-text"><strong>New order #1234</strong> has been placed by John Doe
+                                 </div>
+                                 <div class="notif-time">2 minutes ago</div>
                              </div>
                          </div>
-                         <div class="p-3 d-flex flex-column gap-1 small lh-lg">
-                             <a href="#!" class="">
-
-                                 <span>Home</span>
-                             </a>
-                             <a href="#!" class="">
-
-                                 <span> Inbox</span>
-                             </a>
-                             <a href="#!" class="">
-
-                                 <span> Chat</span>
-                             </a>
-                             <a href="#!" class="">
-
-                                 <span> Activity</span>
-                             </a>
-                             <a href="#!" class="">
-
-                                 <span> Account Settings</span>
-                             </a>
+                         <div class="notification-item unread">
+                             <div class="notif-icon bg-success bg-opacity-10 text-success">
+                                 <i class="bi bi-person-plus"></i>
+                             </div>
+                             <div>
+                                 <div class="notif-text"><strong>New customer</strong> Sarah Miller registered</div>
+                                 <div class="notif-time">15 minutes ago</div>
+                             </div>
                          </div>
-
+                         <div class="notification-item">
+                             <div class="notif-icon bg-warning bg-opacity-10 text-warning">
+                                 <i class="bi bi-exclamation-triangle"></i>
+                             </div>
+                             <div>
+                                 <div class="notif-text"><strong>Low stock alert:</strong> iPhone 15 Pro only 3 left
+                                 </div>
+                                 <div class="notif-time">1 hour ago</div>
+                             </div>
+                         </div>
+                         <div class="notification-item">
+                             <div class="notif-icon bg-danger bg-opacity-10 text-danger">
+                                 <i class="bi bi-x-circle"></i>
+                             </div>
+                             <div>
+                                 <div class="notif-text"><strong>Order #1228</strong> has been cancelled</div>
+                                 <div class="notif-time">3 hours ago</div>
+                             </div>
+                         </div>
+                         <div class="p-2 text-center border-top">
+                             <a href="#" class="text-primary small fw-600">View All Notifications</a>
+                         </div>
                      </div>
                  </div>
-             </li>
-         </ul>
-     </div>
 
- </nav>
+                 <!-- Messages -->
+                 <button class="topbar-btn" title="Messages">
+                     <i class="bi bi-chat-dots"></i>
+                     <span class="notification-dot"></span>
+                 </button>
+
+                 <div class="topbar-divider d-none d-md-block"></div>
+
+                 <!-- User Dropdown -->
+                 <div class="dropdown">
+                     <div class="topbar-user" data-bs-toggle="dropdown">
+                         <div class="topbar-user-avatar">AD</div>
+                         <div class="topbar-user-info d-none d-md-block">
+                             <div class="name">Admin User</div>
+                             <div class="role">Super Admin</div>
+                         </div>
+                         <i class="bi bi-chevron-down ms-1 d-none d-md-inline"
+                             style="font-size: 0.625rem; color: var(--admin-gray-500);"></i>
+                     </div>
+                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                         <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> My Profile</a>
+                         </li>
+                         <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> Settings</a>
+                         </li>
+                         <li><a class="dropdown-item" href="#"><i class="bi bi-activity me-2"></i> Activity
+                                 Log</a></li>
+                         <li>
+                             <hr class="dropdown-divider">
+                         </li>
+                         <li>
+                             <a class="dropdown-item text-danger"  href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                 <i class="bi bi-box-arrow-right me-2"></i> Logout
+                             </a>
+
+                         </li>
+                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                             @csrf
+                         </form>
+                     </ul>
+                 </div>
+             </div>
+         </header>

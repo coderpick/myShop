@@ -1,489 +1,467 @@
 @extends('layouts.backend.master')
 @section('content')
-    <div class="container-fluid">
-        <div class="row ">
-            <div class="col-12">
-                <div class="mb-6">
-                    <h1 class="fs-3 mb-1">Dashboard</h1>
-                    <p>Your main content goes here…</p>
+    <div class="admin-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1>Dashboard</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="d-flex gap-2">
+                <!-- Date Range Filter -->
+                <div class="input-group input-group-sm" style="width: auto;">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-calendar3"></i></span>
+                    <input type="text" class="form-control border-start-0" placeholder="Last 30 days"
+                        style="width: 130px;">
                 </div>
+                <button class="btn btn-admin-primary btn-sm">
+                    <i class="bi bi-download me-1"></i> Export
+                </button>
             </div>
         </div>
-        <div class="row g-3 mb-3">
-            <div class="col-lg-3 col-12">
 
-                <div class="card p-4  bg-primary bg-opacity-10 border border-primary border-opacity-25 rounded-2">
-
-                    <div class="d-flex gap-3 ">
-                        <div class="icon-shape icon-md bg-primary text-white rounded-2">
-                            <i class="ti ti-report-analytics fs-4"></i>
-                        </div>
+        <!-- ===== STAT CARDS ===== -->
+        <div class="row g-3 mb-4">
+            <div class="col-sm-6 col-xl-3">
+                <div class="stat-card primary">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h2 class="mb-3 fs-6">Total Sales</h2>
-                            <h3 class="fw-bold mb-0">$25,000</h3>
-                            <p class="text-primary mb-0 small">+5% since last month</p>
+                            <div class="stat-label">Total Sales</div>
+                            <div class="stat-value">$48,295</div>
+                            <div class="stat-trend up">
+                                <i class="bi bi-arrow-up"></i> 12.5% from last month
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-currency-dollar"></i>
                         </div>
                     </div>
                 </div>
-
-
             </div>
-            <div class="col-lg-3 col-12">
-
-                <div class="card p-4  bg-success bg-opacity-10 border border-success border-opacity-25 rounded-2">
-
-                    <div class="d-flex gap-3 ">
-                        <div class="icon-shape icon-md bg-success text-white rounded-2">
-                            <i class="ti ti-repeat fs-4"></i>
-                        </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="stat-card success">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h2 class="mb-3 fs-6">Total Purchase</h2>
-                            <h3 class="fw-bold mb-0">$18,000</h3>
-                            <p class="text-success mb-0 small">+22% since last month</p>
+                            <div class="stat-label">Total Orders</div>
+                            <div class="stat-value">1,284</div>
+                            <div class="stat-trend up">
+                                <i class="bi bi-arrow-up"></i> 8.2% from last month
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-cart-check"></i>
                         </div>
                     </div>
                 </div>
-
-
             </div>
-            <div class="col-lg-3 col-12">
-
-                <div class="card p-4  bg-info bg-opacity-10 border border-info border-opacity-25 rounded-2">
-
-                    <div class="d-flex gap-3 ">
-                        <div class="icon-shape icon-md bg-info text-white rounded-2">
-                            <i class="ti ti-currency-dollar fs-4"></i>
-                        </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="stat-card warning">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h2 class="mb-3 fs-6">Total Expenses</h2>
-                            <h3 class="fw-bold mb-0">$9,000</h3>
-                            <p class="text-info mb-0 small">+10% since last month</p>
+                            <div class="stat-label">Total Products</div>
+                            <div class="stat-value">356</div>
+                            <div class="stat-trend up">
+                                <i class="bi bi-arrow-up"></i> 24 added this month
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-box-seam"></i>
                         </div>
                     </div>
                 </div>
-
-
             </div>
-            <div class="col-lg-3 col-12">
-
-                <div class="card p-4  bg-warning bg-opacity-10 border border-warning border-opacity-25 rounded-2">
-
-                    <div class="d-flex gap-3 ">
-                        <div class="icon-shape icon-md bg-warning text-white rounded-2">
-                            <i class="ti ti-notes fs-4"></i>
-                        </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="stat-card info">
+                    <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <h2 class="mb-3 fs-6">Invoice Due</h2>
-                            <h3 class="fw-bold mb-0">$25,000</h3>
-                            <p class="text-warning mb-0 small">+35% since last month</p>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-
-        </div>
-        <div class="row g-3 mb-3">
-            <div class="col-lg-4 col-12">
-                <div class="card">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between border-bottom pb-5 mb-3">
-                            <div>
-                                <h3 class="fw-bold h4">$25,458</h3>
-                                <span>Total Profit</span>
-                            </div>
-                            <div>
-                                <i class="ti ti-layers-subtract fs-1 text-primary"></i>
+                            <div class="stat-label">Total Customers</div>
+                            <div class="stat-value">2,847</div>
+                            <div class="stat-trend down">
+                                <i class="bi bi-arrow-down"></i> 3.1% from last month
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center small">
-                            <div class="text-muted"><span class="text-success">+35%</span> vs Last Month</div>
-                            <div><a href="#" class="link-primary text-decoration-underline">View</a></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-lg-4 col-12">
-                <div class="card">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between border-bottom pb-5 mb-3">
-                            <div>
-                                <h3 class="fw-bold h4">$45,458</h3>
-                                <span>Total Payment Returns</span>
-                            </div>
-                            <div>
-                                <i class="ti ti-credit-card fs-1 text-danger"></i>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center small">
-                            <div class="text-muted"><span class="text-danger">-20%</span> vs Last Month</div>
-                            <div><a href="#" class="link-primary text-decoration-underline">View</a></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-lg-4 col-12">
-                <div class="card">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between border-bottom pb-5 mb-3">
-                            <div>
-                                <h3 class="fw-bold h4">$34,458</h3>
-                                <span>Total Expenses</span>
-                            </div>
-                            <div>
-                                <i class="ti ti-cash-banknote fs-1 text-warning"></i>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center small">
-                            <div class="text-muted"><span class="text-warning">-20%</span> vs Last Month</div>
-                            <div><a href="#" class="link-primary text-decoration-underline">View</a></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-        <div class="row g-3 mb-3">
-            <div class="col-12 col-lg-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center bg-transparent px-4 py-3">
-                        <h3 class="h5 mb-0">Sales vs Purchase</h3>
-                        <div>
-                            <select class="form-select form-select-sm">
-                                <option selected>This Year</option>
-                                <option>This Month</option>
-                                <option>This Week</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-
-                        <div id="salesPurchaseChart"></div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-12 col-lg-6">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center bg-transparent px-4 py-3">
-                        <h3 class="h5 mb-0">Overall Information</h3>
-                        <div>
-                            <select class="form-select form-select-sm">
-                                <option selected>Last 6 Months</option>
-                                <option>This Month</option>
-                                <option>This Week</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-                        <h3 class="h6">Customers Overview</h3>
-                        <div class="row align-items-center">
-                            <div class="col-sm-6">
-                                <div id="customerChart">
-
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="row">
-                                    <div class="col-6 border-end">
-                                        <div class="text-center ">
-                                            <h2 class="mb-1">5.5K</h2>
-                                            <p class="text-success mb-2">First Time</p>
-                                            <span class="badge bg-success"><i
-                                                    class="ti ti-arrow-up-left me-1"></i>25%</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="text-center">
-                                            <h2 class="mb-1">3.5K</h2>
-                                            <p class="text-warning mb-2">Return</p>
-                                            <span class="badge bg-success badge-xs d-inline-flex align-items-center"><i
-                                                    class="ti ti-arrow-up-left me-1"></i>21%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div class="row text-center border-top mt-4 pt-4">
-                            <div class="col-4 border-end">
-                                <h3 class="fw-bold mb-2">6987</h3>
-                                <small class="text-secondary">Suppliers</small>
-                            </div>
-                            <div class="col-4 border-end">
-                                <h3 class="fw-bold mb-2">4896</h3>
-                                <small class="text-secondary">Customers</small>
-                            </div>
-                            <div class="col-4">
-                                <h3 class="fw-bold mb-2">487</h3>
-                                <small class="text-secondary">Orders</small>
-                            </div>
+                        <div class="stat-icon">
+                            <i class="bi bi-people"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- ===== CHARTS ROW ===== -->
+        <div class="row g-3 mb-4">
+            <!-- Sales Overview Chart -->
+            <div class="col-lg-8">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h6><i class="bi bi-graph-up me-2"></i>Sales Overview</h6>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-secondary active">Monthly</button>
+                            <button class="btn btn-sm btn-outline-secondary">Weekly</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="salesChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders by Category -->
+            <div class="col-lg-4">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h6><i class="bi bi-pie-chart me-2"></i>Orders by Category</h6>
+                        <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-three-dots"></i></button>
+                    </div>
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <canvas id="categoryChart" height="260"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== RECENT ORDERS & LATEST CUSTOMERS ===== -->
         <div class="row g-3">
-
-            <!-- CARD 1 — Top Selling Products -->
-            <div class="col-lg-4">
-                <div class="card  h-100">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center px-4 py-3">
-                        <h4 class="mb-0 h5">Top Selling Products</h4>
-                        <button class="btn btn-sm btn-outline-secondary">
-                            <i class="ti ti-calendar"></i> Today
-                        </button>
+            <!-- Recent Orders -->
+            <div class="col-lg-8">
+                <div class="data-table-wrapper">
+                    <div class="data-table-header">
+                        <h6><i class="bi bi-clock-history me-2"></i>Recent Orders</h6>
+                        <a href="orders.html" class="btn btn-admin-outline btn-sm">View All</a>
                     </div>
-
-                    <ul class="list-group list-group-flush">
-
-                        <!-- item -->
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-2.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Wireless Earphones</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">$89 </small>
-                                    <small>•</small>
-                                    <small>1,250 Units</small>
-                                </div>
-                            </div>
-                            <span class="badge bg-danger-subtle text-danger border border-danger">18%</span>
-                        </li>
-
-                        <!-- repeat -->
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-1.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Gaming Joy Stick</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">$49 </small>
-                                    <small>•</small>
-                                    <small>5,420 Units</small>
-                                </div>
-
-                            </div>
-                            <span class="badge bg-primary-subtle text-primary border border-primary">32%</span>
-                        </li>
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-3.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Smart Watch Pro</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">$98 </small>
-                                    <small>•</small>
-                                    <small>862 Units</small>
-                                </div>
-
-                            </div>
-                            <span class="badge bg-info-subtle text-info border border-info">22%</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-4.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">USB-C Fast Charger</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">$35 </small>
-                                    <small>•</small>
-                                    <small>3,200 Units</small>
-                                </div>
-
-                            </div>
-                            <span class="badge bg-success-subtle text-success border border-success">28%</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-5.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Portable Bluetooth Speaker</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">$65 </small>
-                                    <small>•</small>
-                                    <small>2,890 Units</small>
-                                </div>
-
-                            </div>
-                            <span class="badge bg-warning-subtle text-warning border border-warning">25%</span>
-                        </li>
-                    </ul>
+                    <div class="table-responsive">
+                        <table class="table admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="order-detail.html" class="fw-600 text-primary">#ORD-1234</a>
+                                    </td>
+                                    <td>
+                                        <div class="customer-cell">
+                                            <div class="customer-avatar">JD</div>
+                                            <span class="customer-name">John Doe</span>
+                                        </div>
+                                    </td>
+                                    <td class="fw-600">$1,299.00</td>
+                                    <td><span class="status-badge processing"><span class="dot"></span>
+                                            Processing</span></td>
+                                    <td class="text-muted">Dec 15, 2024</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="order-detail.html" class="fw-600 text-primary">#ORD-1233</a>
+                                    </td>
+                                    <td>
+                                        <div class="customer-cell">
+                                            <div class="customer-avatar green">SM</div>
+                                            <span class="customer-name">Sarah Miller</span>
+                                        </div>
+                                    </td>
+                                    <td class="fw-600">$499.00</td>
+                                    <td><span class="status-badge delivered"><span class="dot"></span>
+                                            Delivered</span></td>
+                                    <td class="text-muted">Dec 14, 2024</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="order-detail.html" class="fw-600 text-primary">#ORD-1232</a>
+                                    </td>
+                                    <td>
+                                        <div class="customer-cell">
+                                            <div class="customer-avatar orange">RW</div>
+                                            <span class="customer-name">Robert Wilson</span>
+                                        </div>
+                                    </td>
+                                    <td class="fw-600">$899.00</td>
+                                    <td><span class="status-badge shipped"><span class="dot"></span>
+                                            Shipped</span></td>
+                                    <td class="text-muted">Dec 14, 2024</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="order-detail.html" class="fw-600 text-primary">#ORD-1231</a>
+                                    </td>
+                                    <td>
+                                        <div class="customer-cell">
+                                            <div class="customer-avatar blue">EJ</div>
+                                            <span class="customer-name">Emily Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td class="fw-600">$179.00</td>
+                                    <td><span class="status-badge pending"><span class="dot"></span>
+                                            Pending</span></td>
+                                    <td class="text-muted">Dec 13, 2024</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="order-detail.html" class="fw-600 text-primary">#ORD-1230</a>
+                                    </td>
+                                    <td>
+                                        <div class="customer-cell">
+                                            <div class="customer-avatar purple">MC</div>
+                                            <span class="customer-name">Michael Chen</span>
+                                        </div>
+                                    </td>
+                                    <td class="fw-600">$2,499.00</td>
+                                    <td><span class="status-badge cancelled"><span class="dot"></span>
+                                            Cancelled</span></td>
+                                    <td class="text-muted">Dec 13, 2024</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <!-- CARD 2 — Low Stock Products -->
+            <!-- Latest Customers -->
             <div class="col-lg-4">
-                <div class="card  h-100">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center px-4 py-3">
-                        <div class="d-flex align-items-center">
-
-                            <h4 class="mb-0 h5">Low Stock Products</h4>
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h6><i class="bi bi-person-plus me-2"></i>New Customers</h6>
+                        <a href="customers.html" class="btn btn-admin-outline btn-sm">View All</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex align-items-center gap-3 px-4 py-3">
+                                <div class="customer-avatar">AS</div>
+                                <div class="flex-grow-1">
+                                    <div class="customer-name">Alice Smith</div>
+                                    <div class="customer-email">alice@email.com</div>
+                                </div>
+                                <span class="small text-muted">2h ago</span>
+                            </div>
+                            <div class="list-group-item d-flex align-items-center gap-3 px-4 py-3">
+                                <div class="customer-avatar green">BJ</div>
+                                <div class="flex-grow-1">
+                                    <div class="customer-name">Bob Johnson</div>
+                                    <div class="customer-email">bob@email.com</div>
+                                </div>
+                                <span class="small text-muted">5h ago</span>
+                            </div>
+                            <div class="list-group-item d-flex align-items-center gap-3 px-4 py-3">
+                                <div class="customer-avatar orange">CW</div>
+                                <div class="flex-grow-1">
+                                    <div class="customer-name">Carol Williams</div>
+                                    <div class="customer-email">carol@email.com</div>
+                                </div>
+                                <span class="small text-muted">1d ago</span>
+                            </div>
+                            <div class="list-group-item d-flex align-items-center gap-3 px-4 py-3">
+                                <div class="customer-avatar blue">DB</div>
+                                <div class="flex-grow-1">
+                                    <div class="customer-name">David Brown</div>
+                                    <div class="customer-email">david@email.com</div>
+                                </div>
+                                <span class="small text-muted">2d ago</span>
+                            </div>
+                            <div class="list-group-item d-flex align-items-center gap-3 px-4 py-3">
+                                <div class="customer-avatar purple">ED</div>
+                                <div class="flex-grow-1">
+                                    <div class="customer-name">Eva Davis</div>
+                                    <div class="customer-email">eva@email.com</div>
+                                </div>
+                                <span class="small text-muted">3d ago</span>
+                            </div>
                         </div>
-                        <a href="#" class="small text-primary text-decoration-underline">View All</a>
                     </div>
-
-                    <ul class="list-group list-group-flush">
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-8.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Wireless Headphones</p>
-                                <small>ID: #554433</small>
-                            </div>
-                            <div class="d-flex flex-column gap-0 align-items-center">
-                                <span class="fw-semibold text-primary">06</span>
-                                <small class="text-muted">In Stock</small>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-4.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">USB-C Cable Pack</p>
-                                <small>ID: #887766</small>
-                            </div>
-                            <div class="d-flex flex-column gap-0 align-items-center">
-                                <span class="fw-semibold text-primary">09</span>
-                                <small class="text-muted">In Stock</small>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-10.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Phone Screen Protector</p>
-                                <small>ID: #332211</small>
-                            </div>
-                            <div class="d-flex flex-column gap-0 align-items-center">
-                                <span class="fw-semibold text-primary">03</span>
-                                <small class="text-muted">In Stock</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-4.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Portable Charger 20000mAh</p>
-                                <small>ID: #998877</small>
-                            </div>
-                            <div class="d-flex flex-column gap-0 align-items-center">
-                                <span class="fw-semibold text-primary">07</span>
-                                <small class="text-muted">In Stock</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-6.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Mechanical Keyboard RGB</p>
-                                <small>ID: #665544</small>
-                            </div>
-                            <div class="d-flex flex-column gap-0 align-items-center">
-                                <span class="fw-semibold text-primary">02</span>
-                                <small class="text-muted">In Stock</small>
-                            </div>
-                        </li>
-                    </ul>
                 </div>
             </div>
-
-            <!-- CARD 3 — Recent Sales -->
-            <div class="col-lg-4">
-                <div class="card  h-100">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center px-4 py-3">
-                        <h4 class="mb-0 h5">Recent Sales</h4>
-                        <button class="btn btn-sm btn-outline-secondary">
-                            <i class="ti ti-calendar-event"></i> Weekly
-                        </button>
-                    </div>
-
-                    <ul class="list-group list-group-flush">
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-7.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">MacBook Pro 16"</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">Computers </small>
-                                    <small>•</small>
-                                    <small>2,$2,499</small>
-                                </div>
-
-                            </div>
-                            <span class="badge bg-success-subtle text-success">Completed</span>
-                        </li>
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-9.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">AirPods Pro Max</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">Audio </small>
-                                    <small>•</small>
-                                    <small>$549</small>
-                                </div>
-
-                            </div>
-                            <span class="badge bg-primary-subtle text-primary">Processing</span>
-                        </li>
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-8.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">iPad Air 11"</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">Tablets </small>
-                                    <small>•</small>
-                                    <small>$799</small>
-                                </div>
-                            </div>
-                            <span class="badge bg-success-subtle text-success">Completed</span>
-                        </li>
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-3.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Apple Watch Ultra</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">Wearables </small>
-                                    <small>•</small>
-                                    <small>$799</small>
-                                </div>
-                            </div>
-                            <span class="badge bg-warning-subtle text-warning">Pending</span>
-                        </li>
-
-                        <li class="list-group-item d-flex align-items-center gap-3">
-                            <img src="./assets/images/product-6.png" class="rounded" width="48">
-                            <div class="flex-grow-1">
-                                <p class="mb-1">Magic Keyboard</p>
-                                <div class="d-flex align-items-center gap-2 text-muted">
-                                    <small class="fw-semibold">Accessories </small>
-                                    <small>•</small>
-                                    <small>$299</small>
-                                </div>
-
-                            </div>
-                            <span class="badge bg-danger-subtle text-danger">Cancelled</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
         </div>
-        <div class="row">
-            <div class="col-12">
-                <footer class="text-center py-2 mt-6 text-secondary ">
-                    <p class="mb-0">Copyright © 2026 InApp Inventory Dashboard. Developed by <a
-                            href="https://codescandy.com/" target="_blank" class="text-primary">CodesCandy</a> •
-                        Distributed by <a href="https://themewagon.com/" target="_blank"
-                            class="text-primary">ThemeWagon</a> </p>
-                </footer>
-            </div>
-
-        </div>
-
     </div>
 @endsection
+
+@push('page_css')
+    
+@endpush
+@push('page_custom_css')
+  
+@endpush
+
+@push('js')
+    
+@endpush
+
+@push('custom_js')
+    <!-- Dashboard Charts Initialization -->
+    <script>
+        // Sales Overview Line Chart
+        const salesCtx = document.getElementById('salesChart');
+        if (salesCtx) {
+            new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                            label: 'Revenue',
+                            data: [18000, 22000, 19500, 28000, 32000, 29000, 35000, 38000, 42000, 39000, 45000,
+                                48295
+                            ],
+                            borderColor: '#4f46e5',
+                            backgroundColor: 'rgba(79, 70, 229, 0.08)',
+                            borderWidth: 2.5,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            pointHoverBackgroundColor: '#4f46e5',
+                            pointHoverBorderColor: '#fff',
+                            pointHoverBorderWidth: 2,
+                        },
+                        {
+                            label: 'Orders',
+                            data: [12000, 15000, 13500, 20000, 18000, 22000, 25000, 27000, 30000, 28000, 33000,
+                                36000
+                            ],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.08)',
+                            borderWidth: 2.5,
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            pointHoverBackgroundColor: '#10b981',
+                            pointHoverBorderColor: '#fff',
+                            pointHoverBorderWidth: 2,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                padding: 20,
+                                font: {
+                                    size: 12,
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1e293b',
+                            titleFont: {
+                                size: 13,
+                                family: 'Inter'
+                            },
+                            bodyFont: {
+                                size: 12,
+                                family: 'Inter'
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11,
+                                    family: 'Inter'
+                                },
+                                color: '#94a3b8'
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(0,0,0,0.04)'
+                            },
+                            ticks: {
+                                font: {
+                                    size: 11,
+                                    family: 'Inter'
+                                },
+                                color: '#94a3b8',
+                                callback: function(value) {
+                                    return '$' + (value / 1000) + 'k';
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+        }
+
+        // Category Pie Chart
+        const catCtx = document.getElementById('categoryChart');
+        if (catCtx) {
+            new Chart(catCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Smartphones', 'Laptops', 'Audio', 'Wearables', 'Gaming', 'Other'],
+                    datasets: [{
+                        data: [35, 25, 15, 10, 10, 5],
+                        backgroundColor: ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#94a3b8'],
+                        borderWidth: 0,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                padding: 16,
+                                font: {
+                                    size: 11,
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleFont: {
+                                size: 13,
+                                family: 'Inter'
+                            },
+                            bodyFont: {
+                                size: 12,
+                                family: 'Inter'
+                            },
+                            padding: 12,
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(ctx) {
+                                    return ' ' + ctx.label + ': ' + ctx.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+@endpush

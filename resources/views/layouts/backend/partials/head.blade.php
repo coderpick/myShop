@@ -1,8 +1,15 @@
-<meta charset="UTF-8" />
-<title>InApp Inventory Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="apple-touch-icon" sizes="180x180" href="./assets/images/favicon_io/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon_io/favicon-16x16.png">
-<link rel="manifest" href="./assets/images/favicon_io/site.webmanifest">
-<link rel="stylesheet" href="{{ asset('assets/backend/css/main.css') }}">
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Dashboard - ElectroMart Admin</title>
+
+ <!-- Bootstrap 5.3 CSS -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+ <!-- Bootstrap Icons -->
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+ <!-- Google Fonts -->
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+ <!-- Custom Admin CSS -->
+ <link href="{{ asset('assets/backend/css/admin.css') }}" rel="stylesheet">
+ {!! ToastMagic::styles() !!}
+ @stack('page_css')
+ @stack('page_custom_css')
