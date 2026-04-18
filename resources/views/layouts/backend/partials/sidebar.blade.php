@@ -13,7 +13,8 @@
            <div class="sidebar-menu-title">Main Menu</div>
            <ul class="sidebar-nav">
                <li class="sidebar-nav-item">
-                   <a href="{{ route('admin.dashboard') }}" class="sidebar-nav-link {{ Request::is('admin/dashboard')?'active':'' }}">
+                   <a href="{{ route('admin.dashboard') }}"
+                       class="sidebar-nav-link {{ Request::is('admin/dashboard') ? 'active' : '' }}">
                        <i class="bi bi-grid-1x2-fill"></i>
                        <span class="nav-text">Dashboard</span>
                    </a>
@@ -24,9 +25,17 @@
            <div class="sidebar-menu-title">Store Management</div>
            <ul class="sidebar-nav">
                <li class="sidebar-nav-item">
-                   <a href="{{ route('admin.category.index') }}" class="sidebar-nav-link {{ Request::is('admin/category*')?'active':'' }}">
+                   <a href="{{ route('admin.category.index') }}"
+                       class="sidebar-nav-link {{ Request::is('admin/category*') ? 'active' : '' }}">
                        <i class="bi bi-tags"></i>
                        <span class="nav-text">Categories</span>
+                   </a>
+               </li>
+               <li class="sidebar-nav-item">
+                   <a href="{{ route('admin.sub_category.index') }}"
+                       class="sidebar-nav-link {{ Request::is('admin/sub_category*') ? 'active' : '' }}">
+                       <i class="bi bi-tags"></i>
+                       <span class="nav-text">Sub Categories</span>
                    </a>
                </li>
                <li class="sidebar-nav-item">
