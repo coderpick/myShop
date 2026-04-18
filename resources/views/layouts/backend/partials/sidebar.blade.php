@@ -54,7 +54,8 @@
                        <i class="bi bi-chevron-right arrow"></i>
                    </a>
                    <ul class="sidebar-submenu collapse" id="productSubmenu">
-                       <li><a href="products.html" class="sidebar-nav-link"><span class="nav-text">All
+                       <li><a href="{{ route('admin.product.index') }}" class="sidebar-nav-link"><span
+                                   class="nav-text">All
                                    Products</span></a></li>
                        <li><a href="add-product.html" class="sidebar-nav-link"><span class="nav-text">Add
                                    Product</span></a></li>
