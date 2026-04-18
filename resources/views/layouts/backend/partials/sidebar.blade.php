@@ -38,6 +38,15 @@
                        <span class="nav-text">Sub Categories</span>
                    </a>
                </li>
+
+               <li class="sidebar-nav-item">
+                   <a href="{{ route('admin.brand.index') }}"
+                       class="sidebar-nav-link {{ Request::is('admin/brand*') ? 'active' : '' }}">
+                       <i class="bi bi-tags"></i>
+                       <span class="nav-text">Brands</span>
+                   </a>
+               </li>
+
                <li class="sidebar-nav-item">
                    <a href="#productSubmenu" class="sidebar-nav-link" data-bs-toggle="collapse" aria-expanded="false">
                        <i class="bi bi-box-seam"></i>
