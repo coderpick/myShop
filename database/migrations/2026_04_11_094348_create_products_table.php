@@ -21,12 +21,18 @@ return new class extends Migration
             $table->integer('discount')->nullable()->default('0');
             $table->float('discount_price')->nullable()->default('0');
             $table->integer('stock');
+            $table->string('sku')->nullable();
+            $table->integer('low_stock_alert')->default('5');
             $table->enum('status', ['published', 'draft'])->default('draft');
-            $table->boolean('is_popular')->default(false);
-            $table->boolean('is_trending')->default(false);
-            $table->boolean('is_bestseller')->default(false);
-            $table->boolean('is_featured')->default(false);
-            $table->integer('view_count')->default('0');
+            $table->boolean('is_popular')->nullable()->default(false);
+            $table->boolean('is_trending')->nullable()->default(false);
+            $table->boolean('is_bestseller')->nullable()->default(false);
+            $table->boolean('is_featured')->nullable()->default(false);
+            $table->boolean('is_new_arrival')->nullable()->default(false);
+            $table->integer('view_count')->nullable()->default('0');
+            $table->text('meta_title')->nullable();
+            $table->text('meta_keywords')->nullable();
+            $table->text('meta_description')->nullable();
             $table->foreignId('brand_id')
                 ->constrained()
                 ->cascadeOnDelete();

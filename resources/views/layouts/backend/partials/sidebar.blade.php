@@ -57,7 +57,8 @@
                        <li><a href="{{ route('admin.product.index') }}" class="sidebar-nav-link"><span
                                    class="nav-text">All
                                    Products</span></a></li>
-                       <li><a href="add-product.html" class="sidebar-nav-link"><span class="nav-text">Add
+                       <li><a href="{{ route('admin.product.create') }}" class="sidebar-nav-link"><span
+                                   class="nav-text">Add
                                    Product</span></a></li>
                    </ul>
                </li>

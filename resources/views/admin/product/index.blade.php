@@ -13,7 +13,7 @@
                     </ol>
                 </nav>
             </div>
-            <a href="add-product.html" class="btn btn-admin-primary">
+            <a href="{{ route('admin.product.create') }}" class="btn btn-admin-primary">
                 <i class="bi bi-plus-lg"></i> Add Product
             </a>
         </div>
