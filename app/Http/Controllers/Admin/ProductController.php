@@ -41,6 +41,7 @@ class ProductController extends Controller
      */
     public function store(ProductStoreRequest $request)
     {
+    
         $product = Product::create([
             'name' => $request->name,
             'slug' => $request->slug,
@@ -174,10 +175,10 @@ class ProductController extends Controller
         return redirect()->route('admin.product.index');
     }
 
-    public function deleteImage(string $id)
+    public function deleteImage(Request $request)
     {
-        $image = ProductImage::findOrFail($id);
-        $this->delete($image->image_path);
+        $image = ProductImage::findOrFail($request->id);
+        $this->delete($image->image_path); /* remove image from uploads folder */
         $image->delete();
 
         return response()->json(['status' => 'success', 'message' => 'Image deleted successfully']);

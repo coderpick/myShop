@@ -447,10 +447,11 @@
 
                 if (confirm('Are you sure you want to delete this image?')) {
                     $.ajax({
-                        url: `/admin/product-image-delete/${imageId}`,
+                        url: `{{ route('admin.product-image.destroy') }}`,
                         type: 'DELETE',
                         data: {
-                            _token: '{{ csrf_token() }}'
+                            _token: '{{ csrf_token() }}',
+                            id: imageId
                         },
                         success: function(response) {
                             if (response.status === 'success') {
