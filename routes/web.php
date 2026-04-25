@@ -25,6 +25,7 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(funct
     Route::resource('sub_category', SubCategoryController::class)->except('show');
     Route::resource('brand', BrandController::class)->except('show');
     Route::resource('product', ProductController::class);
+    Route::delete('product-image-delete/{id}', [ProductController::class, 'deleteImage'])->name('product-image.destroy');
 
 });
 

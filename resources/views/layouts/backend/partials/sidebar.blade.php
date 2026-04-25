@@ -48,16 +48,16 @@
                </li>
 
                <li class="sidebar-nav-item">
-                   <a href="#productSubmenu" class="sidebar-nav-link" data-bs-toggle="collapse" aria-expanded="false">
+                   <a href="#productSubmenu" class="sidebar-nav-link {{ Request::is('admin/product*') ? 'active' : '' }}" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/product*') ? 'true' : 'false' }}">
                        <i class="bi bi-box-seam"></i>
                        <span class="nav-text">Products</span>
                        <i class="bi bi-chevron-right arrow"></i>
                    </a>
-                   <ul class="sidebar-submenu collapse" id="productSubmenu">
-                       <li><a href="{{ route('admin.product.index') }}" class="sidebar-nav-link"><span
+                   <ul class="sidebar-submenu collapse {{ Request::is('admin/product*') ? 'show' : '' }}" id="productSubmenu">
+                       <li><a href="{{ route('admin.product.index') }}" class="sidebar-nav-link {{ Request::routeIs('admin.product.index') ? 'active' : '' }}"><span
                                    class="nav-text">All
                                    Products</span></a></li>
-                       <li><a href="{{ route('admin.product.create') }}" class="sidebar-nav-link"><span
+                       <li><a href="{{ route('admin.product.create') }}" class="sidebar-nav-link {{ Request::routeIs('admin.product.create') ? 'active' : '' }}"><span
                                    class="nav-text">Add
                                    Product</span></a></li>
                    </ul>
@@ -104,12 +104,12 @@
                        <span class="nav-text">General Settings</span>
                    </a>
                </li>
-               <li class="sidebar-nav-item">
+               {{-- <li class="sidebar-nav-item">
                    <a href="#" class="sidebar-nav-link">
                        <i class="bi bi-shield-check"></i>
                        <span class="nav-text">Roles & Permissions</span>
                    </a>
-               </li>
+               </li> --}}
                <li class="sidebar-nav-item">
                    <a href="#" class="sidebar-nav-link">
                        <i class="bi bi-folder2-open"></i>
