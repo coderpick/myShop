@@ -41,6 +41,11 @@ class ProductUpdateRequest extends FormRequest
             'meta_title' => 'nullable|string|max:60',
             'meta_description' => 'nullable|string|max:160',
             'meta_keywords' => 'nullable|string|max:200',
+            'is_popular' => 'nullable',
+            'is_trending' => 'nullable',
+            'is_bestseller' => 'nullable',
+            'is_featured' => 'nullable',
+            'is_new_arrival' => 'nullable',
         ];
     }
 }

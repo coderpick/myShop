@@ -10,13 +10,18 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\SubCategory;
-use App\Traits\FileUploadWithResizeTrait;
+use App\Services\Admin\ProductService;
 use Devrabiul\ToastMagic\Facades\ToastMagic;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    use FileUploadWithResizeTrait;
+    protected $productService;
+
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
 
     public function index()
     {
@@ -41,42 +46,7 @@ class ProductController extends Controller
      */
     public function store(ProductStoreRequest $request)
     {
-        $product = Product::create([
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'short_description' => $request->short_description,
-            'description' => $request->description,
-            'price' => $request->price,
-            'discount' => $request->discount,
-            'discount_price' => $request->discount_price,
-            'stock' => $request->stock,
-            'sku' => $request->sku,
-            'low_stock_alert' => $request->low_stock_alert,
-            'status' => $request->status,
-            'is_popular' => $request->has('is_popular'),
-            'is_trending' => $request->has('is_trending'),
-            'is_bestseller' => $request->has('is_bestseller'),
-            'is_featured' => $request->has('is_featured'),
-            'is_new_arrival' => $request->has('is_new_arrival'),
-            'meta_title' => $request->meta_title,
-            'meta_keywords' => $request->meta_keywords,
-            'meta_description' => $request->meta_description,
-            'brand_id' => $request->brand_id,
-            'category_id' => $request->category_id,
-            'sub_category_id' => $request->sub_category_id,
-        ]);
-
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->upload($image, 'uploads/products', false, true, 800, 800);
-                if ($imagePath) {
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => $imagePath,
-                    ]);
-                }
-            }
-        }
+        $this->productService->store($request->validated(), $request->file('images'));
 
         ToastMagic::success('Product added successfully');
 
@@ -110,44 +80,7 @@ class ProductController extends Controller
      */
     public function update(ProductUpdateRequest $request, string $id)
     {
-        $product = Product::findOrFail($id);
-
-        $product->update([
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'short_description' => $request->short_description,
-            'description' => $request->description,
-            'price' => $request->price,
-            'discount' => $request->discount,
-            'discount_price' => $request->discount_price,
-            'stock' => $request->stock,
-            'sku' => $request->sku,
-            'low_stock_alert' => $request->low_stock_alert,
-            'status' => $request->status,
-            'is_popular' => $request->has('is_popular'),
-            'is_trending' => $request->has('is_trending'),
-            'is_bestseller' => $request->has('is_bestseller'),
-            'is_featured' => $request->has('is_featured'),
-            'is_new_arrival' => $request->has('is_new_arrival'),
-            'meta_title' => $request->meta_title,
-            'meta_keywords' => $request->meta_keywords,
-            'meta_description' => $request->meta_description,
-            'brand_id' => $request->brand_id,
-            'category_id' => $request->category_id,
-            'sub_category_id' => $request->sub_category_id,
-        ]);
-
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $imagePath = $this->upload($image, 'uploads/products', false, true, 800, 800);
-                if ($imagePath) {
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => $imagePath,
-                    ]);
-                }
-            }
-        }
+        $this->productService->update($id, $request->validated(), $request->file('images'));
 
         ToastMagic::success('Product updated successfully');
 
@@ -159,26 +92,19 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $product = Product::with('images')->findOrFail($id);
-
-        // Delete physical images
-        foreach ($product->images as $image) {
-            $this->delete($image->image_path);
-        }
-
-        // Delete product (cascading will delete ProductImage records)
-        $product->delete();
+        $this->productService->delete($id);
 
         ToastMagic::success('Product deleted successfully');
 
         return redirect()->route('admin.product.index');
     }
 
+    /**
+     * Delete a single product image.
+     */
     public function deleteImage(string $id)
     {
-        $image = ProductImage::findOrFail($id);
-        $this->delete($image->image_path);
-        $image->delete();
+        $this->productService->deleteImage($id);
 
         return response()->json(['status' => 'success', 'message' => 'Image deleted successfully']);
     }
