@@ -41,7 +41,7 @@ class ProductController extends Controller
      */
     public function store(ProductStoreRequest $request)
     {
-    
+
         $product = Product::create([
             'name' => $request->name,
             'slug' => $request->slug,
@@ -90,6 +90,7 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::with(['brand', 'category', 'subCategory', 'images'])->findOrFail($id);
+
         return view('admin.product.show', compact('product'));
     }
 

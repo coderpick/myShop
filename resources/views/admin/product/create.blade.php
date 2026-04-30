@@ -12,7 +12,11 @@
                         <li class="breadcrumb-item active">Add Product</li>
                     </ol>
                 </nav>
+
             </div>
+            <a href="{{ route('admin.product.index') }}" class="btn btn-warning">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
         </div>
 
         <!-- Alert placeholder -->
@@ -240,7 +244,7 @@
                                 {{ old('is_trending') == '1' ? 'checked' : '' }}>
                             <label class="form-check-label small" for="popular">Trending Product</label>
 
-                        </div>                    
+                        </div>
                     </div>
 
                     <!-- Tags -->
