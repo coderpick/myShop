@@ -1542,6 +1542,10 @@ img {
     border: 1px solid var(--gray-lighter);
     position: sticky;
     top: 100px;
+    z-index: 100;
+}
+.cuppon-section {
+    z-index: 5;
 }
 
 .cart-summary h5 {

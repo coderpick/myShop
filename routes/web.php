@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\ShopController;
@@ -15,7 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('product/{slug}', ProductDetailController::class)->name('product.show');
-Route::get('category/{category?}', ShopController::class)->name('shop');
+Route::get('shop', [ShopController::class, 'index'])->name('shop');
+Route::get('category/{slug}', [ShopController::class, 'index'])->name('shop.category');
+Route::get('subcategory/{slug}', [ShopController::class, 'index'])->name('shop.subcategory');
+Route::get('brand/{slug}', [ShopController::class, 'index'])->name('shop.brand');
 
 /* user authentication routs */
 Auth::routes();
@@ -37,3 +42,23 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(funct
 /* get subcategory by category id start */
 
 Route::get('get-subcategories-by-category', [AjaxController::class, 'getSubcategoriesByCategory'])->name('getSubCategories');
+
+/* cart routes */
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'getCart'])->name('index');
+    Route::get('/count', [CartController::class, 'getCartCount'])->name('count');
+    Route::post('/add', [CartController::class, 'addToCart'])->name('add');
+    Route::post('/update', [CartController::class, 'updateCart'])->name('update');
+    Route::post('/remove', [CartController::class, 'removeFromCart'])->name('remove');
+    Route::post('/clear', [CartController::class, 'clearCart'])->name('clear');
+});
+
+/* checkout routes */
+Route::middleware(['auth'])->prefix('checkout')->name('checkout.')->group(function () {
+    Route::get('/{step?}', [CheckoutController::class, 'step'])->name('step');
+    Route::post('/submit-step/{step}', [CheckoutController::class, 'submitStep'])->name('submit-step');
+    Route::post('/place-order', [CheckoutController::class, 'placeOrder'])->name('place-order');
+    Route::get('/payment/{orderId}', [CheckoutController::class, 'payment'])->name('payment');
+    Route::post('/payment/{orderId}', [CheckoutController::class, 'processPayment'])->name('process-payment');
+    Route::get('/success/{orderId}', [CheckoutController::class, 'success'])->name('success');
+});

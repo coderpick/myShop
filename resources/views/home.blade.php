@@ -258,7 +258,7 @@
                                         <span class="current-price">{{ $trendingProduct->price }}</span>
                                     @endif
                                 </div>
-                                <button class="btn-add-cart" onclick="addToCart('iPhone 15 Pro')">
+                                <button class="btn-add-cart" onclick="addToCart({{ $trendingProduct->id }})">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
                                 </button>
                             </div>
@@ -269,7 +269,7 @@
             </div>
             <!-- Mobile View All -->
             <div class="text-center mt-4 d-md-none">
-                <a href="shop.html" class="btn btn-outline-custom">View All Products</a>
+                <a href="{{ route('shop') }}" class="btn btn-outline-custom">View All Products</a>
             </div>
         </div>
     </section>
@@ -434,8 +434,9 @@
             <div class="brand-slider">
                 <div class="brand-track">
                     @forelse ($brands as $brand)
-                        <div class="brand-logo" title="{{ $brand->name }}"><img src="{{ asset($brand->logo) }}"
-                                alt="{{ $brand->name }}"></div>
+                        <a href="{{ route('shop.brand', $brand->slug) }}" class="brand-logo"
+                            title="{{ $brand->name }}"><img src="{{ asset($brand->logo) }}"
+                                alt="{{ $brand->name }}"></a>
                     @empty
                     @endforelse
                 </div>

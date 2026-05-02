@@ -67,14 +67,14 @@
                                         style="width:30px;height:30px;background:#2563eb;border:2px solid #ccc;"></button>
                                 </div>
                             </div>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-primary-custom flex-grow-1" onclick="addToCart('iPhone 15 Pro')">
-                                    <i class="bi bi-cart-plus me-2"></i>Add to Cart
-                                </button>
-                                <button class="btn btn-outline-custom">
-                                    <i class="bi bi-heart"></i>
-                                </button>
-                            </div>
+                             <div class="d-flex gap-2">
+                                 <button class="btn btn-primary-custom flex-grow-1" onclick="addToCartFromModal()">
+                                     <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                                 </button>
+                                 <button class="btn btn-outline-custom">
+                                     <i class="bi bi-heart"></i>
+                                 </button>
+                             </div>
                             <a href="product.html" class="btn btn-link text-primary mt-2 p-0">View Full Details →</a>
                         </div>
                     </div>
@@ -103,6 +103,27 @@
     </div>
 
     @include('layouts.frontend.partials.scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/cart/count')
+                .then(res => res.json())
+                .then(data => {
+                    const el = document.getElementById('cartCount');
+                    if (el) el.textContent = data.count;
+                });
+        });
+
+        function addToCartFromModal() {
+            const modalProductId = document.querySelector('.quick-view-modal')?.dataset.productId;
+            if (modalProductId) {
+                addToCart(parseInt(modalProductId));
+            } else {
+                showToastMsg('Please view the product page to add to cart.');
+            }
+        }
+    </script>
+ 
 </body>
 
 </html>

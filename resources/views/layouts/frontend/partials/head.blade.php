@@ -1,6 +1,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <meta name="description" content="ElectroMart - Your one-stop shop for electronics, gadgets, and accessories">
+ <meta name="csrf-token" content="{{ csrf_token() }}">
  <title>@yield('pageTitle', 'ElectroMart') - Premium Electronics Store</title>
 
  <!-- Bootstrap 5.3 CSS -->

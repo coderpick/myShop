@@ -5,7 +5,6 @@
                <i class="bi bi-lightning-charge-fill"></i>
                ElectroMart
            </a>
-
            <!-- Search Bar (Desktop) -->
            <div class="search-bar d-none d-lg-flex mx-4">
                <input type="text" class="form-control" placeholder="Search for products, brands, and more...">
@@ -32,22 +31,37 @@
                        <i class="bi bi-person"></i>
                    </a>
                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                       <li><a class="dropdown-item" href="login.html"><i
-                                   class="bi bi-box-arrow-in-right me-2"></i>Login</a></li>
-                       <li><a class="dropdown-item" href="login.html"><i class="bi bi-person-plus me-2"></i>Register</a>
-                       </li>
-                       <li>
-                           <hr class="dropdown-divider">
-                       </li>
-                       <li><a class="dropdown-item" href="#"><i class="bi bi-bag me-2"></i>My Orders</a></li>
-                       <li><a class="dropdown-item" href="#"><i class="bi bi-heart me-2"></i>Wishlist</a></li>
+                       @guest
+                           <li><a class="dropdown-item" href="{{ route('login') }}"><i
+                                       class="bi bi-box-arrow-in-right me-2"></i>Login</a></li>
+                           <li><a class="dropdown-item" href="{{ route('register') }}"><i
+                                       class="bi bi-person-plus me-2"></i>Register</a>
+                           </li>
+                       @else
+                           <li>
+                               <a href="#" class="dropdown-item"
+                                   disabled><strong>{{ Auth::user()->name }}</strong></a>
+                           </li>
+                           <li><a class="dropdown-item" href="#"><i class="bi bi-bag me-2"></i>My Orders</a></li>
+                           <li><a class="dropdown-item" href="#"><i class="bi bi-heart me-2"></i>Wishlist</a></li>
+                           <li>
+                               <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                   <i class="bi bi-box-arrow-left me-2"></i>Logout
+                               </a>
+                           </li>
+                           <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                               @csrf
+                           </form>
+                       @endguest
                    </ul>
                </div>
 
                <!-- Cart -->
-               <a href="cart.html" class="nav-link">
+               <a href="{{ route('cart.index') }}" class="nav-link">
                    <i class="bi bi-cart3"></i>
-                   <span class="badge-cart" id="cartCount">3</span>
+                   <span class="badge-cart" id="cartCount">{{ count((array) session('cart', [])) }}</span>
                </a>
 
                <!-- Mobile Toggle -->

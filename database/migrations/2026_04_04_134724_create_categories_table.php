@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('icon')->nullable();
-            $table->boolean('is_show_in_menu')->default(false);
+            $table->boolean('is_show_in_menu')->default(false);            
             $table->timestamps();
         });
     }

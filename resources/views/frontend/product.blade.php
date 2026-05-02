@@ -120,7 +120,7 @@
 
                         <!-- Action Buttons -->
                         <div class="d-flex gap-3 mb-4 flex-wrap">
-                            <button class="btn btn-primary-custom btn-lg flex-grow-1" onclick="addToCart('iPhone 15 Pro')">
+                            <button class="btn btn-primary-custom btn-lg flex-grow-1" onclick="addToCart({{ $product->id }})">
                                 <i class="bi bi-cart-plus me-2"></i> Add to Cart
                             </button>
                             <button class="btn btn-secondary-custom btn-lg flex-grow-1">
@@ -401,7 +401,7 @@
                                     </div>
 
 
-                                    <button class="btn-add-cart" onclick="addToCart('AirPods Pro')"><i
+                                    <button class="btn-add-cart" onclick="addToCart({{ $relatedProduct->id }})"><i
                                             class="bi bi-cart-plus"></i> Add to Cart</button>
                                 </div>
                             </div>

@@ -9,10 +9,21 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
+        'order_number',
         'user_id',
-        'product_id',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
+        'shipping_address',
+        'city',
+        'state',
+        'postal_code',
         'quantity',
         'total_price',
+        'payment_method',
+        'payment_status',
+        'transaction_id',
+        'notes',
         'status',
     ];
 
@@ -24,5 +35,10 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

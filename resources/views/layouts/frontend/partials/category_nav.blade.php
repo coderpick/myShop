@@ -1,80 +1,43 @@
 <div class="category-nav d-none d-lg-block">
-        <div class="container">
-            <ul class="nav justify-content-center">
-                <li class="nav-item dropdown dropdown-mega dropdown-hover">
-                    <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-grid"></i> All Categories
-                    </a>
-                    <div class="dropdown-menu mega-menu shadow-lg border-0 p-4" aria-labelledby="categoryDropdown">
-                        <div class="row g-4">
+    <div class="container">
+        <ul class="nav justify-content-center">
+            <li class="nav-item dropdown dropdown-mega dropdown-hover">
+                <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-grid"></i> All Categories
+                </a>
+                <div class="dropdown-menu mega-menu shadow-lg border-0 p-4" aria-labelledby="categoryDropdown">
+                    <div class="row g-4">
+                        @forelse ($categoriesWithSub as $category)
                             <div class="col-lg-3">
-                                <h6 class="dropdown-header fw-bold text-primary mb-2 ps-0">Mobiles & Tablets</h6>
+                                <h6 class="dropdown-header fw-bold text-primary mb-2 ps-0">{{ $category->name }}</h6>
                                 <ul class="list-unstyled">
-                                    <li><a class="dropdown-item rounded" href="shop.html">Smartphones</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Android Phones</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">iPhones</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Tablets</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Accessories</a></li>
+                                    @forelse($category->subCategories as $subCategory)
+                                        <li><a class="dropdown-item rounded"
+                                                href="{{ route('shop.subcategory', $subCategory->slug) }}">{{ $subCategory->name }}</a>
+                                        </li>
+                                    @empty
+                                    @endforelse
                                 </ul>
                             </div>
-                            <div class="col-lg-3">
-                                <h6 class="dropdown-header fw-bold text-primary mb-2 ps-0">Laptops & Computers</h6>
-                                <ul class="list-unstyled">
-                                    <li><a class="dropdown-item rounded" href="shop.html">Gaming Laptops</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">MacBooks</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Desktops</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Monitors</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Printers</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-3">
-                                <h6 class="dropdown-header fw-bold text-primary mb-2 ps-0">Audio & Gadgets</h6>
-                                <ul class="list-unstyled">
-                                    <li><a class="dropdown-item rounded" href="shop.html">Headphones</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Bluetooth Speakers</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Smartwatches</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Drones</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Cameras</a></li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-3">
-                                <h6 class="dropdown-header fw-bold text-primary mb-2 ps-0">Home Appliances</h6>
-                                <ul class="list-unstyled">
-                                    <li><a class="dropdown-item rounded" href="shop.html">Smart TVs</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Refrigerators</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Air Conditioners</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Washing Machines</a></li>
-                                    <li><a class="dropdown-item rounded" href="shop.html">Kitchen Appliances</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        @empty
+                        @endforelse
+
                     </div>
-                </li>
+                </div>
+            </li>
+            @forelse ($navCategories as $navCategory)
                 <li class="nav-item">
-                    <a class="nav-link" href="shop.html"><i class="bi bi-phone"></i> Mobiles</a>
+                    <a class="nav-link" href="{{ route('shop.category', $navCategory->slug) }}"><i
+                            class="{{ $navCategory->icon }}"></i> {{ $navCategory->name }}</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html"><i class="bi bi-laptop"></i> Laptops</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html"><i class="bi bi-headphones"></i> Audio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html"><i class="bi bi-tv"></i> TVs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html"><i class="bi bi-smartwatch"></i> Wearables</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html"><i class="bi bi-camera"></i> Cameras</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="shop.html"><i class="bi bi-controller"></i> Gaming</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-warning" href="shop.html"><i class="bi bi-lightning"></i> Deals</a>
-                </li>
-            </ul>
-        </div>
+            @empty
+            @endforelse
+
+
+            <li class="nav-item">
+                <a class="nav-link text-warning" href="#"><i class="bi bi-lightning"></i> Deals</a>
+            </li>
+        </ul>
     </div>
+</div>
