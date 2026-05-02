@@ -27,40 +27,18 @@
                                     <span>1</span>
                                 @endif
                             </div>
-                            <span class="step-label">Login</span>
+                            <span class="step-label">Information</span>
                         </div>
                         <div class="step-line {{ $currentStep > 1 ? 'active' : '' }}"></div>
-                        <div class="step {{ $currentStep >= 2 ? 'active' : '' }} {{ $currentStep > 2 ? 'completed' : '' }}">
+                        <div class="step {{ $currentStep >= 2 ? 'active' : '' }}">
                             <div class="step-icon">
-                                @if ($currentStep > 2)
-                                    <i class="bi bi-check-lg"></i>
-                                @else
+                                @if ($currentStep == 2)
                                     <span>2</span>
-                                @endif
-                            </div>
-                            <span class="step-label">Shipping</span>
-                        </div>
-                        <div class="step-line {{ $currentStep > 2 ? 'active' : '' }}"></div>
-                        <div class="step {{ $currentStep >= 3 ? 'active' : '' }} {{ $currentStep > 3 ? 'completed' : '' }}">
-                            <div class="step-icon">
-                                @if ($currentStep > 3)
-                                    <i class="bi bi-check-lg"></i>
-                                @else
-                                    <span>3</span>
-                                @endif
-                            </div>
-                            <span class="step-label">Payment</span>
-                        </div>
-                        <div class="step-line {{ $currentStep > 3 ? 'active' : '' }}"></div>
-                        <div class="step {{ $currentStep >= 4 ? 'active' : '' }}">
-                            <div class="step-icon">
-                                @if ($currentStep == 4)
-                                    <span>4</span>
                                 @else
                                     <i class="bi bi-check-lg"></i>
                                 @endif
                             </div>
-                            <span class="step-label">Review</span>
+                            <span class="step-label">Payment & Review</span>
                         </div>
                     </div>
                 </div>
@@ -79,13 +57,9 @@
             <div class="row g-4">
                 <div class="col-lg-8">
                     @if ($currentStep == 1)
-                        @include('frontend.checkout.steps.step1-login')
+                        @include('frontend.checkout.steps.step1-information')
                     @elseif($currentStep == 2)
-                        @include('frontend.checkout.steps.step2-shipping')
-                    @elseif($currentStep == 3)
-                        @include('frontend.checkout.steps.step3-payment')
-                    @elseif($currentStep == 4)
-                        @include('frontend.checkout.steps.step4-review')
+                        @include('frontend.checkout.steps.step2-payment-review')
                     @endif
                 </div>
 
@@ -120,12 +94,49 @@
                             <span>Total</span>
                             <span>${{ number_format($total, 2) }}</span>
                         </div>
+
+                        @if ($currentStep == 1)
+                            <button type="button" class="btn btn-primary-custom w-100 btn-lg" id="continueToPaymentBtn">
+                                Continue to Payment <i class="bi bi-arrow-right ms-2"></i>
+                            </button>
+                        @elseif ($currentStep == 2)
+                            <form action="{{ route('checkout.submit-step', 2) }}" method="POST" id="placeOrderForm">
+                                @csrf
+                                <input type="hidden" name="payment_method" id="paymentMethodInput" value="{{ $checkoutData['payment_method'] ?? '' }}">
+                                <button type="submit" class="btn btn-primary-custom w-100 btn-lg">
+                                    <i class="bi bi-lock me-2"></i>Place Order
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </section>
 @endsection
+
+@push('page_scripts')
+<script>
+$(document).ready(function() {
+    // Sync payment method selection
+    $('input[name="payment_method"]').on('change', function() {
+        $('#paymentMethodInput').val($(this).val());
+    });
+
+    // Submit shipping form when Continue to Payment is clicked
+    $('#continueToPaymentBtn').on('click', function() {
+        // Find the shipping form in the included step file
+        var $shippingForm = $('form[action*="checkout.submit-step"][action*="1"]');
+        if ($shippingForm.length) {
+            $shippingForm.submit();
+        } else {
+            // Fallback: submit the form with id shippingForm
+            $('#shippingForm').submit();
+        }
+    });
+});
+</script>
+@endpush
 
 @push('page_styles')
     <style>
@@ -185,7 +196,7 @@
         }
 
         .checkout-steps .step-line {
-            width: 80px;
+            width: 120px;
             height: 3px;
             background: #e2e8f0;
             margin: 0 10px;
@@ -199,7 +210,7 @@
 
         @media (max-width: 768px) {
             .checkout-steps .step-line {
-                width: 40px;
+                width: 60px;
                 margin: 0 5px;
                 margin-bottom: 25px;
             }

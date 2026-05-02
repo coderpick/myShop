@@ -103,27 +103,7 @@
     </div>
 
     @include('layouts.frontend.partials.scripts')
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/cart/count')
-                .then(res => res.json())
-                .then(data => {
-                    const el = document.getElementById('cartCount');
-                    if (el) el.textContent = data.count;
-                });
-        });
-
-        function addToCartFromModal() {
-            const modalProductId = document.querySelector('.quick-view-modal')?.dataset.productId;
-            if (modalProductId) {
-                addToCart(parseInt(modalProductId));
-            } else {
-                showToastMsg('Please view the product page to add to cart.');
-            }
-        }
-    </script>
- 
+  
 </body>
 
 </html>

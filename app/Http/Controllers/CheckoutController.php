@@ -20,7 +20,7 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
-        $validSteps = [1, 2, 3, 4];
+        $validSteps = [1, 2];
         if ($step && !in_array($step, $validSteps)) {
             return redirect()->route('checkout.step', 1);
         }
@@ -52,6 +52,7 @@ class CheckoutController extends Controller
 
         switch ($step) {
             case 1:
+                // Combine login and shipping info
                 if (!Auth::check()) {
                     $validated = $request->validate([
                         'email' => 'required|email',
@@ -60,9 +61,7 @@ class CheckoutController extends Controller
                     ]);
                     $checkoutData = array_merge($checkoutData, $validated);
                 }
-                break;
 
-            case 2:
                 $validated = $request->validate([
                     'shipping_address' => 'required|string',
                     'mobile_number' => 'required|string|max:20',
@@ -81,12 +80,15 @@ class CheckoutController extends Controller
                 }
                 break;
 
-            case 3:
+            case 2:
                 $validated = $request->validate([
                     'payment_method' => 'required|in:online,cod',
                 ]);
                 $checkoutData = array_merge($checkoutData, $validated);
-                break;
+
+                session(['checkout_data' => $checkoutData]);
+
+                return $this->placeOrderDirectly();
         }
 
         session(['checkout_data' => $checkoutData]);
@@ -97,7 +99,7 @@ class CheckoutController extends Controller
         return redirect()->route('checkout.step', $nextStep);
     }
 
-    public function placeOrder()
+    private function placeOrderDirectly()
     {
         $checkoutData = session('checkout_data', []);
         $cart = session()->get('cart', []);

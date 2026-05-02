@@ -78,10 +78,10 @@
                                                 </td>
                                                 <td>
                                                     <div class="quantity-selector">
-                                                        <button onclick="updateCartQty(this, -1)">−</button>
+                                                        <button>−</button>
                                                         <input type="number" value="{{ $item['quantity'] }}"
                                                             min="1" max="10">
-                                                        <button onclick="updateCartQty(this, 1)">+</button>
+                                                        <button>+</button>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -89,8 +89,7 @@
                                                         class="cart-subtotal fw-bold">${{ number_format($item['subtotal'], 2) }}</span>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-outline-danger"
-                                                        onclick="removeCartItem(this)" title="Remove">
+                                                    <button class="btn btn-sm btn-outline-danger btn-remove-item" title="Remove">
                                                         <i class="bi bi-x-lg"></i>
                                                     </button>
                                                 </td>
@@ -103,7 +102,7 @@
                                 <a href="{{ route('shop') }}" class="btn btn-outline-custom">
                                     <i class="bi bi-arrow-left me-1"></i> Continue Shopping
                                 </a>
-                                <button class="btn btn-outline-danger" onclick="clearCart()">
+                                <button class="btn btn-outline-danger btn-clear-cart">
                                     <i class="bi bi-trash me-1"></i> Clear Cart
                                 </button>
                             </div>
