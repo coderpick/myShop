@@ -126,11 +126,14 @@ $(document).ready(function() {
     // Submit shipping form when Continue to Payment is clicked
     $('#continueToPaymentBtn').on('click', function() {
         // Find the shipping form in the included step file
-        var $shippingForm = $('form[action*="checkout.submit-step"][action*="1"]');
-        if ($shippingForm.length) {
-            $shippingForm.submit();
+        var $form = $('form').filter(function() {
+            return $(this).attr('action') && $(this).attr('action').includes('checkout.submit-step/1');
+        });
+        
+        if ($form.length) {
+            $form.submit();
         } else {
-            // Fallback: submit the form with id shippingForm
+            // Fallback: try to submit the form with id shippingForm
             $('#shippingForm').submit();
         }
     });
