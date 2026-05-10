@@ -224,8 +224,7 @@
                                 <button class="action-btn" title="Add to Wishlist" onclick="toggleWishlist(this)">
                                     <i class="bi bi-heart"></i>
                                 </button>
-                                <button class="action-btn" title="Quick View" data-bs-toggle="modal"
-                                    data-bs-target="#quickViewModal">
+                                <button class="action-btn" title="Quick View" onclick="openQuickView({{ $trendingProduct->id }})">
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>

@@ -32,13 +32,13 @@
                     <div class="row g-4">
                         <div class="col-md-5">
                             <div class="text-center p-3 bg-light rounded">
-                                <img src="https://via.placeholder.com/300x300/f1f5f9/2563eb?text=Product" alt="Product"
+                                <img src="" alt="Product" id="qv-image"
                                     class="img-fluid">
                             </div>
                         </div>
                         <div class="col-md-7">
-                            <span class="badge bg-primary mb-2">Smartphones</span>
-                            <h4 class="fw-bold">Apple iPhone 15 Pro 256GB</h4>
+                            <span class="badge bg-primary mb-2" id="qv-category"></span>
+                            <h4 class="fw-bold" id="qv-name"></h4>
                             <div class="product-rating mb-2">
                                 <div class="stars">
                                     <i class="bi bi-star-fill text-warning"></i>
@@ -47,26 +47,12 @@
                                     <i class="bi bi-star-fill text-warning"></i>
                                     <i class="bi bi-star-half text-warning"></i>
                                 </div>
-                                <span class="rating-count">(234 Reviews)</span>
+                                <span class="rating-count">(0 Reviews)</span>
                             </div>
-                            <div class="mb-3">
-                                <span class="fs-3 fw-bold text-primary">$999</span>
-                                <span class="text-decoration-line-through text-muted ms-2">$1,199</span>
-                                <span class="badge bg-danger ms-2">-17%</span>
+                            <div class="mb-3" id="qv-price-container">
+                                <!-- Price will be dynamically injected here -->
                             </div>
-                            <p class="text-muted mb-3">The most powerful iPhone ever. Features a stunning titanium
-                                design, A17 Pro chip, and a revolutionary camera system.</p>
-                            <div class="d-flex align-items-center gap-3 mb-3">
-                                <span class="fw-bold">Color:</span>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm rounded-circle"
-                                        style="width:30px;height:30px;background:#1e293b;border:2px solid #ccc;"></button>
-                                    <button class="btn btn-sm rounded-circle"
-                                        style="width:30px;height:30px;background:#e2e8f0;border:2px solid #ccc;"></button>
-                                    <button class="btn btn-sm rounded-circle"
-                                        style="width:30px;height:30px;background:#2563eb;border:2px solid #ccc;"></button>
-                                </div>
-                            </div>
+                            <p class="text-muted mb-3" id="qv-description"></p>
                              <div class="d-flex gap-2">
                                  <button class="btn btn-primary-custom flex-grow-1" onclick="addToCartFromModal()">
                                      <i class="bi bi-cart-plus me-2"></i>Add to Cart
@@ -75,7 +61,7 @@
                                      <i class="bi bi-heart"></i>
                                  </button>
                              </div>
-                            <a href="product.html" class="btn btn-link text-primary mt-2 p-0">View Full Details →</a>
+                            <a href="#" class="btn btn-link text-primary mt-2 p-0" id="qv-link">View Full Details →</a>
                         </div>
                     </div>
                 </div>
@@ -121,6 +107,43 @@
             } else {
                 showToastMsg('Please view the product page to add to cart.');
             }
+        }
+
+        function openQuickView(productId) {
+            // Fetch product details via AJAX
+            fetch(`{{ url('/product-quick-view') }}/${productId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Populate modal fields
+                    console.log(data);
+                    
+                    document.getElementById('qv-image').src = data.image;
+                    document.getElementById('qv-category').textContent = data.category;
+                    document.getElementById('qv-name').textContent = data.name;
+                    
+                    let priceHtml = '';
+                    if (data.discount > 0 && data.discount_price > 0) {
+                        priceHtml = `
+                            <span class="fs-3 fw-bold text-primary">$${data.discount_price}</span>
+                            <span class="text-decoration-line-through text-muted ms-2">$${data.price}</span>
+                            <span class="badge bg-danger ms-2">-${data.discount}%</span>
+                        `;
+                    } else {
+                        priceHtml = `<span class="fs-3 fw-bold text-primary">$${data.price}</span>`;
+                    }
+                    document.getElementById('qv-price-container').innerHTML = priceHtml;
+                    
+                    document.getElementById('qv-description').textContent = data.short_description;
+                    document.getElementById('qv-link').href = data.product_url;
+                    
+                    // Set product ID on the modal for "Add to Cart" functionality
+                    document.querySelector('.quick-view-modal').dataset.productId = data.id;
+
+                    // Open the modal
+                    const quickViewModal = new bootstrap.Modal(document.getElementById('quickViewModal'));
+                    quickViewModal.show();
+                })
+                .catch(error => console.error('Error fetching product details:', error));
         }
     </script>
  

@@ -80,6 +80,11 @@
                  </button>
 
                  <div class="topbar-divider d-none d-md-block"></div>
+                 {{-- show home page link --}}
+                 <button class="topbar-btn" title="Home Page">
+                     <a href="{{ uri('/') }}"><i class="bi bi-house"></i></a>
+                 </button>
+                 <div class="topbar-divider d-none d-md-block"></div>
 
                  <!-- User Dropdown -->
                  <div class="dropdown">
@@ -103,8 +108,8 @@
                              <hr class="dropdown-divider">
                          </li>
                          <li>
-                             <a class="dropdown-item text-danger"  href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                             <a class="dropdown-item text-danger" href="{{ route('logout') }}"
+                                 onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                  <i class="bi bi-box-arrow-right me-2"></i> Logout
                              </a>

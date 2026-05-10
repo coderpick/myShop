@@ -27,4 +27,23 @@ class AjaxController extends Controller
 
         return $subCategoryOptions;
     }
+    public function getProductQuickView($id)
+    {
+        $product = \App\Models\Product::with(['category', 'images'])->findOrFail($id);
+
+        $imagePath = $product->images->count() > 0 ? asset($product->images->first()->image_path) : 'https://via.placeholder.com/300x300/f1f5f9/2563eb?text=Product';
+
+        return response()->json([
+            'id' => $product->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'category' => $product->category->name ?? 'Uncategorized',
+            'price' => number_format((float)$product->price, 2),
+            'discount' => $product->discount,
+            'discount_price' => $product->discount_price ? number_format((float)$product->discount_price, 2) : 0,
+            'short_description' => $product->short_description ?? '',
+            'image' => $imagePath,
+            'product_url' => route('product.show', $product->slug)
+        ]);
+    }
 }

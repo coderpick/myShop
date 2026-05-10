@@ -43,6 +43,9 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(funct
 
 Route::get('get-subcategories-by-category', [AjaxController::class, 'getSubcategoriesByCategory'])->name('getSubCategories');
 
+/* product quick view route */
+Route::get('product-quick-view/{id}', [AjaxController::class, 'getProductQuickView'])->name('product.quickView');
+
 /* cart routes */
 Route::prefix('cart')->name('cart.')->group(function () {
     Route::get('/', [CartController::class, 'getCart'])->name('index');
