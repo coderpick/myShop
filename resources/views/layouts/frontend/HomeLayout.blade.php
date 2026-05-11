@@ -89,7 +89,6 @@
     </div>
 
     @include('layouts.frontend.partials.scripts')
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             fetch('/cart/count')
@@ -145,8 +144,8 @@
                 })
                 .catch(error => console.error('Error fetching product details:', error));
         }
-    </script>
- 
+    </script> 
+
 </body>
 
 </html>

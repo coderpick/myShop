@@ -1,528 +1,506 @@
 /* ============================================
-   ElectroMart - Main JavaScript
+   ElectroMart - Main JavaScript (jQuery)
    ============================================ */
 
-// ========== DOM Ready ==========
-document.addEventListener("DOMContentLoaded", function () {
-  initDarkMode();
-  initBackToTop();
-  initNavbarScroll();
-  initPriceRange();
-  initCountdown();
-  initPaymentToggle();
+$(document).ready(function() {
+    initDarkMode();
+    initBackToTop();
+    initNavbarScroll();
+    initPriceRange();
+    initCountdown();
+    initPaymentToggle();
+    initCartFunctions();
+    loadCartCount();
 });
 
 // ========== Dark Mode Toggle ==========
 function initDarkMode() {
-  const toggle = document.getElementById("darkModeToggle");
-  if (!toggle) return;
+    var $toggle = $('#darkModeToggle');
+    if (!$toggle.length) return;
 
-  // Check saved preference
-  const savedTheme = localStorage.getItem("theme") || "light";
-  document.documentElement.setAttribute("data-theme", savedTheme);
-  updateDarkModeIcon(toggle, savedTheme);
+    var savedTheme = localStorage.getItem('theme') || 'light';
+    $('html').attr('data-theme', savedTheme);
+    updateDarkModeIcon($toggle, savedTheme);
 
-  toggle.addEventListener("click", function () {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    $toggle.on('click', function() {
+        var currentTheme = $('html').attr('data-theme');
+        var newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    updateDarkModeIcon(toggle, newTheme);
-  });
+        $('html').attr('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateDarkModeIcon($toggle, newTheme);
+    });
 }
 
-function updateDarkModeIcon(toggle, theme) {
-  const icon = toggle.querySelector("i");
-  if (theme === "dark") {
-    icon.className = "bi bi-sun-fill";
-  } else {
-    icon.className = "bi bi-moon-fill";
-  }
+function updateDarkModeIcon($toggle, theme) {
+    var $icon = $toggle.find('i');
+    if (theme === 'dark') {
+        $icon.attr('class', 'bi bi-sun-fill');
+    } else {
+        $icon.attr('class', 'bi bi-moon-fill');
+    }
 }
 
 // ========== Back to Top Button ==========
 function initBackToTop() {
-  const backToTopBtn = document.getElementById("backToTop");
-  if (!backToTopBtn) return;
+    var $btn = $('#backToTop');
+    if (!$btn.length) return;
 
-  window.addEventListener("scroll", function () {
-    if (window.scrollY > 300) {
-      backToTopBtn.classList.add("show");
-    } else {
-      backToTopBtn.classList.remove("show");
-    }
-  });
+    $(window).on('scroll', function() {
+        if ($(window).scrollTop() > 300) {
+            $btn.addClass('show');
+        } else {
+            $btn.removeClass('show');
+        }
+    });
 
-  backToTopBtn.addEventListener("click", function () {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+    $btn.on('click', function() {
+        $('html, body').animate({ scrollTop: 0 }, 300);
+    });
 }
 
 // ========== Navbar Scroll Effect ==========
 function initNavbarScroll() {
-  const navbar = document.querySelector(".navbar-main");
-  if (!navbar) return;
+    var $navbar = $('.navbar-main');
+    if (!$navbar.length) return;
 
-  window.addEventListener("scroll", function () {
-    if (window.scrollY > 50) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
-    }
-  });
+    $(window).on('scroll', function() {
+        if ($(window).scrollTop() > 50) {
+            $navbar.addClass('scrolled');
+        } else {
+            $navbar.removeClass('scrolled');
+        }
+    });
 }
 
-// ========== Add to Cart ==========
+// ========== Cart Functions ==========
+function initCartFunctions() {
+    $(document).on('click', '.quantity-selector button', function() {
+        var $btn = $(this);
+        var isIncrement = $.trim($btn.text()) === '+';
+        var change = isIncrement ? 1 : -1;
+        updateCartQty($btn, change);
+    });
+
+    $(document).on('click', '.btn-remove-item', function() {
+        removeCartItem($(this));
+    });
+
+    $(document).on('click', '.btn-clear-cart', function(e) {
+        e.preventDefault();
+        clearCart();
+    });
+}
+
 function addToCart(productId) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-    fetch('/cart/add', {
-        method: 'POST',
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        url: '/cart/add',
+        type: 'POST',
+        data: JSON.stringify({ product_id: productId, quantity: 1 }),
+        contentType: 'application/json',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json',
+            'Accept': 'application/json'
         },
-        body: JSON.stringify({ product_id: productId, quantity: 1 }),
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            updateCartBadge(data.count);
-            showToastMsg(data.message);
-        } else {
-            showToastMsg(data.message || 'Failed to add to cart!');
+        success: function(data) {
+            if (data.success) {
+                updateCartBadge(data.count);
+                showToastMsg(data.message);
+            } else {
+                showToastMsg(data.message || 'Failed to add to cart!');
+            }
+        },
+        error: function() {
+            showToastMsg('Failed to add to cart!');
         }
-    })
-    .catch(err => {
-        showToastMsg('Failed to add to cart!');
     });
 }
 
 function updateCartBadge(count) {
-    const el = document.getElementById('cartCount');
-    if (el) {
-        el.textContent = count;
-        el.style.transform = 'scale(1.5)';
-        setTimeout(() => {
-            el.style.transform = 'scale(1)';
+    var $el = $('#cartCount');
+    if ($el.length) {
+        $el.text(count).css('transform', 'scale(1.5)');
+        setTimeout(function() {
+            $el.css('transform', 'scale(1)');
         }, 200);
     }
 }
 
-// ========== Toast Notification ==========
-function showToastMsg(message) {
-  const toastEl = document.getElementById("cartToast");
-  const toastMsg = document.getElementById("toastMessage");
-
-  if (toastEl && toastMsg) {
-    toastMsg.textContent = message;
-    const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
-    toast.show();
-  }
-}
-
-// ========== Wishlist Toggle ==========
-function toggleWishlist(btn) {
-  const icon = btn.querySelector("i");
-
-  if (icon.classList.contains("bi-heart")) {
-    icon.classList.remove("bi-heart");
-    icon.classList.add("bi-heart-fill");
-    btn.classList.add("wishlist-active");
-    showToastMsg("Added to wishlist!");
-  } else {
-    icon.classList.remove("bi-heart-fill");
-    icon.classList.add("bi-heart");
-    btn.classList.remove("wishlist-active");
-    showToastMsg("Removed from wishlist");
-  }
-}
-
-// ========== Product Image Gallery ==========
-function changeImage(thumbnail, imageUrl) {
-  // Update main image
-  const mainImage = document.getElementById("mainProductImage");
-  if (mainImage) {
-    mainImage.src = imageUrl;
-
-    // Add fade effect
-    mainImage.style.opacity = "0";
-    setTimeout(() => {
-      mainImage.style.opacity = "1";
-    }, 100);
-  }
-
-  // Update active thumbnail
-  document
-    .querySelectorAll(".thumbnail")
-    .forEach((t) => t.classList.remove("active"));
-  thumbnail.classList.add("active");
-}
-
-// ========== Quantity Selector (Product Page) ==========
-function updateQty(change) {
-  const input = document.getElementById("productQty");
-  if (!input) return;
-
-  let value = parseInt(input.value) + change;
-  if (value < 1) value = 1;
-  if (value > 10) value = 10;
-  input.value = value;
-}
-
-// ========== Cart Quantity Update ==========
-function updateCartQty(btn, change) {
-    const container = btn.closest(".quantity-selector");
-    const input = container.querySelector("input");
-
-    let value = parseInt(input.value) + change;
-    if (value < 1) value = 1;
-    if (value > 10) value = 10;
-    input.value = value;
-
-    const productId = btn.closest('tr')?.dataset.productId || btn.closest('.cart-item')?.dataset.productId;
-    if (!productId) return;
-
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-
-    fetch('/cart/update', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json',
-        },
-        body: JSON.stringify({ product_id: parseInt(productId), quantity: value }),
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            recalcCartRow(btn, data.subtotal);
-            showToastMsg('Cart updated!');
-        } else {
-            showToastMsg(data.message || 'Failed to update cart!');
+function loadCartCount() {
+    $.ajax({
+        url: '/cart/count',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var $el = $('#cartCount');
+            if ($el.length) $el.text(data.count);
         }
-    })
-    .catch(err => {
-        showToastMsg('Failed to update cart!');
     });
 }
 
-function recalcCartRow(btn, newSubtotal) {
-    const row = btn.closest('tr');
-    if (!row) return;
+function showToastMsg(message) {
+    var $toastEl = $('#cartToast');
+    var $toastMsg = $('#toastMessage');
 
-    const subtotalEl = row.querySelector('.cart-subtotal');
-    if (subtotalEl) {
-        subtotalEl.textContent = '$' + parseFloat(newSubtotal).toFixed(2);
+    if ($toastEl.length && $toastMsg.length) {
+        $toastMsg.text(message);
+        var toast = new bootstrap.Toast($toastEl[0], { delay: 3000 });
+        toast.show();
+    }
+}
+
+function updateCartQty($btn, change) {
+    var $container = $btn.closest('.quantity-selector');
+    var $input = $container.find('input');
+
+    var value = parseInt($input.val()) + change;
+    if (value < 1) value = 1;
+    if (value > 10) value = 10;
+    $input.val(value);
+
+    var $row = $btn.closest('tr, .cart-item');
+    var productId = $row.data('product-id');
+
+    if (!productId) return;
+
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        url: '/cart/update',
+        type: 'POST',
+        data: JSON.stringify({ product_id: parseInt(productId), quantity: value }),
+        contentType: 'application/json',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json'
+        },
+        success: function(data) {
+            if (data.success) {
+                recalcCartRow($btn, data.subtotal);
+                showToastMsg('Cart updated!');
+            } else {
+                showToastMsg(data.message || 'Failed to update cart!');
+            }
+        },
+        error: function() {
+            showToastMsg('Failed to update cart!');
+        }
+    });
+}
+
+function recalcCartRow($btn, newSubtotal) {
+    var $row = $btn.closest('tr');
+    if (!$row.length) return;
+
+    var $subtotalEl = $row.find('.cart-subtotal');
+    if ($subtotalEl.length) {
+        $subtotalEl.text('$' + parseFloat(newSubtotal).toFixed(2));
     }
 
     updateCartTotals();
 }
 
 function updateCartTotals() {
-    let subtotal = 0;
-    document.querySelectorAll('.cart-subtotal').forEach(el => {
-        const val = parseFloat(el.textContent.replace('$', '')) || 0;
+    var subtotal = 0;
+    $('.cart-subtotal').each(function() {
+        var val = parseFloat($(this).text().replace('$', '')) || 0;
         subtotal += val;
     });
 
-    const totalEl = document.querySelector('.cart-summary .summary-row.total span:last-child');
-    if (totalEl) {
-        totalEl.textContent = '$' + subtotal.toFixed(2);
+    var $totalEl = $('.cart-summary .summary-row.total span:last-child');
+    if ($totalEl.length) {
+        $totalEl.text('$' + subtotal.toFixed(2));
     }
 
-    const subtotalRow = document.querySelector('.cart-summary .summary-row:not(.total) span:last-child');
-    if (subtotalRow) {
-        subtotalRow.textContent = '$' + subtotal.toFixed(2);
+    var $subtotalRow = $('.cart-summary .summary-row:not(.total) span:last-child');
+    if ($subtotalRow.length) {
+        $subtotalRow.text('$' + subtotal.toFixed(2));
     }
 }
 
-// ========== Remove Cart Item ==========
-function removeCartItem(btn) {
-    const row = btn.closest("tr");
-    if (!row) return;
+function removeCartItem($btn) {
+    var $row = $btn.closest('tr');
+    if (!$row.length) return;
 
-    const productId = row.dataset.productId;
+    var productId = $row.data('product-id');
     if (!productId) return;
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    fetch('/cart/remove', {
-        method: 'POST',
+    $.ajax({
+        url: '/cart/remove',
+        type: 'POST',
+        data: JSON.stringify({ product_id: parseInt(productId) }),
+        contentType: 'application/json',
         headers: {
-            'Content-Type': 'application/json',
             'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json',
+            'Accept': 'application/json'
         },
-        body: JSON.stringify({ product_id: parseInt(productId) }),
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            row.style.transition = "opacity 0.3s ease, transform 0.3s ease";
-            row.style.opacity = "0";
-            row.style.transform = "translateX(-20px)";
-
-            setTimeout(() => {
-                row.remove();
-                updateCartBadge(data.count);
-                updateCartTotals();
-                checkCartEmpty();
-                showToastMsg(data.message);
-            }, 300);
-        } else {
-            showToastMsg(data.message || 'Failed to remove item!');
+        success: function(data) {
+            if (data.success) {
+                $row.css({ opacity: 0, transform: 'translateX(-20px)' });
+                setTimeout(function() {
+                    $row.remove();
+                    updateCartBadge(data.count);
+                    updateCartTotals();
+                    checkCartEmpty();
+                    showToastMsg(data.message);
+                }, 300);
+            } else {
+                showToastMsg(data.message || 'Failed to remove item!');
+            }
+        },
+        error: function() {
+            showToastMsg('Failed to remove item!');
         }
-    })
-    .catch(err => {
-        showToastMsg('Failed to remove item!');
     });
 }
 
 function checkCartEmpty() {
-    const tbody = document.querySelector('.cart-table tbody');
-    if (tbody && tbody.querySelectorAll('tr').length === 0) {
-        window.location.reload();
+    var $tbody = $('.cart-table tbody');
+    if ($tbody.length && $tbody.find('tr').length === 0) {
+        location.reload();
     }
 }
 
-// ========== Clear Cart ==========
 function clearCart() {
-    if (confirm("Are you sure you want to clear your cart?")) {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    if (!confirm('Are you sure you want to clear your cart?')) return;
 
-        fetch('/cart/clear', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-                'Accept': 'application/json',
-            },
-        })
-        .then(res => res.json())
-        .then(data => {
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        url: '/cart/clear',
+        type: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json'
+        },
+        success: function(data) {
             if (data.success) {
                 showToastMsg(data.message);
-                setTimeout(() => {
-                    window.location.reload();
+                setTimeout(function() {
+                    location.reload();
                 }, 1000);
             }
-        })
-        .catch(err => {
+        },
+        error: function() {
             showToastMsg('Failed to clear cart!');
+        }
+    });
+}
+
+// ========== Wishlist Toggle ==========
+window.toggleWishlist = function(btn) {
+    var $btn = $(btn);
+    var $icon = $btn.find('i');
+
+    if ($icon.hasClass('bi-heart')) {
+        $icon.removeClass('bi-heart').addClass('bi-heart-fill');
+        $btn.addClass('wishlist-active');
+        showToastMsg('Added to wishlist!');
+    } else {
+        $icon.removeClass('bi-heart-fill').addClass('bi-heart');
+        $btn.removeClass('wishlist-active');
+        showToastMsg('Removed from wishlist');
+    }
+};
+
+// ========== Product Image Gallery ==========
+window.changeImage = function(thumbnail, imageUrl) {
+    var $thumbnail = $(thumbnail);
+    var $mainImage = $('#mainProductImage');
+
+    if ($mainImage.length) {
+        $mainImage.css('opacity', 0);
+        $mainImage.attr('src', imageUrl);
+        setTimeout(function() {
+            $mainImage.css('opacity', 1);
+        }, 100);
+    }
+
+    $('.thumbnail').removeClass('active');
+    $thumbnail.addClass('active');
+};
+
+// ========== Quantity Selector ==========
+window.updateQty = function(change) {
+    var $input = $('#productQty');
+    if (!$input.length) return;
+
+    var value = parseInt($input.val()) + change;
+    if (value < 1) value = 1;
+    if (value > 10) value = 10;
+    $input.val(value);
+};
+
+// ========== Password Toggle ==========
+window.togglePassword = function(inputId, btn) {
+    var $input = $('#' + inputId);
+    var $icon = $(btn).find('i');
+
+    if ($input.attr('type') === 'password') {
+        $input.attr('type', 'text');
+        $icon.attr('class', 'bi bi-eye-slash');
+    } else {
+        $input.attr('type', 'password');
+        $icon.attr('class', 'bi bi-eye');
+    }
+};
+
+// ========== Price Range Slider ==========
+function initPriceRange() {
+    var $priceRange = $('#priceRange');
+    var $priceValue = $('#priceValue');
+
+    if ($priceRange.length && $priceValue.length) {
+        $priceRange.on('input', function() {
+            $priceValue.text('$' + parseInt($(this).val()).toLocaleString());
         });
     }
 }
 
-// ========== Price Range Slider ==========
-function initPriceRange() {
-  const priceRange = document.getElementById("priceRange");
-  const priceValue = document.getElementById("priceValue");
-
-  if (priceRange && priceValue) {
-    priceRange.addEventListener("input", function () {
-      priceValue.textContent = "$" + parseInt(this.value).toLocaleString();
-    });
-  }
-}
-
 // ========== Countdown Timer ==========
 function initCountdown() {
-  const countdownTimers = document.querySelectorAll(".countdown-timer");
+    var $countdownTimers = $('.countdown-timer');
+    if (!$countdownTimers.length) return;
 
-  if (countdownTimers.length === 0) return;
+    function updateTimers() {
+        $countdownTimers.each(function() {
+            var $timer = $(this);
+            var $daysEl = $timer.find('[data-days]');
+            var $hoursEl = $timer.find('[data-hours]');
+            var $minutesEl = $timer.find('[data-minutes]');
+            var $secondsEl = $timer.find('[data-seconds]');
 
-  function updateTimers() {
-    countdownTimers.forEach((timer) => {
-      const daysEl = timer.querySelector("[data-days]");
-      const hoursEl = timer.querySelector("[data-hours]");
-      const minutesEl = timer.querySelector("[data-minutes]");
-      const secondsEl = timer.querySelector("[data-seconds]");
+            if (!$secondsEl.length) return;
 
-      if (!secondsEl) return;
+            var seconds = parseInt($secondsEl.text());
+            var minutes = parseInt($minutesEl.text());
+            var hours = parseInt($hoursEl.text());
+            var days = parseInt($daysEl.text());
 
-      let seconds = parseInt(secondsEl.textContent);
-      let minutes = parseInt(minutesEl.textContent);
-      let hours = parseInt(hoursEl.textContent);
-      let days = parseInt(daysEl.textContent);
+            seconds--;
 
-      seconds--;
-
-      if (seconds < 0) {
-        seconds = 59;
-        minutes--;
-
-        if (minutes < 0) {
-          minutes = 59;
-          hours--;
-
-          if (hours < 0) {
-            hours = 23;
-            days--;
-
-            if (days < 0) {
-              days = 0;
-              hours = 0;
-              minutes = 0;
-              seconds = 0;
+            if (seconds < 0) {
+                seconds = 59;
+                minutes--;
+                if (minutes < 0) {
+                    minutes = 59;
+                    hours--;
+                    if (hours < 0) {
+                        hours = 23;
+                        days--;
+                        if (days < 0) {
+                            days = 0;
+                            hours = 0;
+                            minutes = 0;
+                            seconds = 0;
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
 
-      daysEl.textContent = String(days).padStart(2, "0");
-      hoursEl.textContent = String(hours).padStart(2, "0");
-      minutesEl.textContent = String(minutes).padStart(2, "0");
-      secondsEl.textContent = String(seconds).padStart(2, "0");
-    });
-  }
+            $daysEl.text(days < 10 ? '0' + days : days);
+            $hoursEl.text(hours < 10 ? '0' + hours : hours);
+            $minutesEl.text(minutes < 10 ? '0' + minutes : minutes);
+            $secondsEl.text(seconds < 10 ? '0' + seconds : seconds);
+        });
+    }
 
-  setInterval(updateTimers, 1000);
-}
-
-// ========== Password Toggle ==========
-function togglePassword(inputId, btn) {
-  const input = document.getElementById(inputId);
-  const icon = btn.querySelector("i");
-
-  if (input.type === "password") {
-    input.type = "text";
-    icon.className = "bi bi-eye-slash";
-  } else {
-    input.type = "password";
-    icon.className = "bi bi-eye";
-  }
+    setInterval(updateTimers, 1000);
 }
 
 // ========== Payment Method Toggle ==========
 function initPaymentToggle() {
-  const paymentOptions = document.querySelectorAll(".payment-option");
+    var $paymentOptions = $('.payment-option');
 
-  paymentOptions.forEach((option) => {
-    const radio = option.querySelector('input[type="radio"]');
-    if (radio) {
-      radio.addEventListener("change", function () {
-        // Remove selected class from all
-        paymentOptions.forEach((opt) => opt.classList.remove("selected"));
-        // Add to current
-        option.classList.add("selected");
+    $paymentOptions.each(function() {
+        var $option = $(this);
+        var $radio = $option.find('input[type="radio"]');
 
-        // Toggle card details visibility
-        const cardDetails = document.getElementById("cardDetails");
-        if (cardDetails) {
-          cardDetails.style.display = this.id === "payCard" ? "block" : "none";
+        if ($radio.length) {
+            $radio.on('change', function() {
+                $paymentOptions.removeClass('selected');
+                $option.addClass('selected');
+
+                var $cardDetails = $('#cardDetails');
+                if ($cardDetails.length) {
+                    $cardDetails.toggle(this.id === 'payCard');
+                }
+            });
         }
-      });
-    }
-  });
+    });
 }
 
-// ========== Place Order ==========
-function placeOrder(event) {
-  event.preventDefault();
-
-  // Simple validation
-  const form = document.getElementById("checkoutForm");
-  if (!form) return;
-
-  // Show success
-  const btn = event.target.closest("button");
-  const originalText = btn.innerHTML;
-
-  btn.innerHTML =
-    '<span class="spinner-border spinner-border-sm me-2"></span> Processing...';
-  btn.disabled = true;
-
-  setTimeout(() => {
-    btn.innerHTML = '<i class="bi bi-check-circle me-2"></i> Order Placed!';
-    btn.classList.remove("btn-primary-custom");
-    btn.classList.add("btn-success");
-
-    showToastMsg(
-      "🎉 Order placed successfully! Thank you for shopping with us.",
-    );
-
-    // Reset after delay
-    setTimeout(() => {
-      btn.innerHTML = originalText;
-      btn.classList.remove("btn-success");
-      btn.classList.add("btn-primary-custom");
-      btn.disabled = false;
-    }, 3000);
-  }, 2000);
-}
-
-// ========== Smooth Scroll for Anchor Links ==========
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener("click", function (e) {
-    const target = document.querySelector(this.getAttribute("href"));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+// ========== Search Functionality ==========
+$('.btn-search').on('click', function() {
+    var $input = $(this).closest('.search-bar').find('input');
+    if ($input.length && $.trim($input.val())) {
+        showToastMsg('Searching for "' + $input.val() + '"...');
     }
-  });
 });
 
-// ========== Search Functionality (Simple) ==========
-document.querySelectorAll(".btn-search").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const input = this.closest(".search-bar").querySelector("input");
-    if (input && input.value.trim()) {
-      // In a real app, redirect to search results
-      showToastMsg(`Searching for "${input.value}"...`);
+$('.search-bar input').on('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        var $btn = $(this).closest('.search-bar').find('.btn-search');
+        if ($btn.length) $btn.click();
     }
-  });
-});
-
-// Allow Enter key to trigger search
-document.querySelectorAll(".search-bar input").forEach((input) => {
-  input.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const btn = this.closest(".search-bar").querySelector(".btn-search");
-      if (btn) btn.click();
-    }
-  });
 });
 
 // ========== Newsletter Subscribe ==========
-document.querySelectorAll(".newsletter-form .btn").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const input = this.closest(".newsletter-form").querySelector("input");
-    if (input && input.value.trim() && input.value.includes("@")) {
-      showToastMsg("Thank you for subscribing! 🎉");
-      input.value = "";
+$('.newsletter-form .btn').on('click', function() {
+    var $input = $(this).closest('.newsletter-form').find('input');
+    if ($input.length && $.trim($input.val()) && $input.val().includes('@')) {
+        showToastMsg('Thank you for subscribing!');
+        $input.val('');
     } else {
-      showToastMsg("Please enter a valid email address");
+        showToastMsg('Please enter a valid email address');
     }
-  });
 });
 
-// ========== Lazy Load Images (Performance) ==========
-if ("IntersectionObserver" in window) {
-  const imageObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        if (img.dataset.src) {
-          img.src = img.dataset.src;
-          img.removeAttribute("data-src");
-        }
-        observer.unobserve(img);
-      }
-    });
-  });
+// ========== Smooth Scroll ==========
+$('a[href^="#"]').on('click', function(e) {
+    var target = $($(this).attr('href'));
+    if (target.length) {
+        e.preventDefault();
+        $('html, body').animate({ scrollTop: target.offset().top }, 300);
+    }
+});
 
-  document.querySelectorAll("img[data-src]").forEach((img) => {
-    imageObserver.observe(img);
-  });
+// ========== Lazy Load Images ==========
+if ('IntersectionObserver' in window) {
+    var imageObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                var $img = $(entry.target);
+                if ($img.data('src')) {
+                    $img.attr('src', $img.data('src')).removeAttr('data-src');
+                }
+                imageObserver.unobserve(entry.target);
+            }
+        });
+    });
+
+    $('img[data-src]').each(function() {
+        imageObserver.observe(this);
+    });
 }
+
+// ========== Add to Cart from Modal ==========
+window.addToCartFromModal = function() {
+    var modalProductId = $('.quick-view-modal').data('product-id');
+    if (modalProductId) {
+        addToCart(parseInt(modalProductId));
+    } else {
+        showToastMsg('Please view the product page to add to cart.');
+    }
+};
 
 // ========== Console Branding ==========
 console.log(
-  "%c ElectroMart %c v1.0.0 ",
-  "background: #2563eb; color: white; font-size: 14px; padding: 4px 8px; border-radius: 4px 0 0 4px; font-weight: bold;",
-  "background: #1e293b; color: white; font-size: 14px; padding: 4px 8px; border-radius: 0 4px 4px 0;",
+    '%c ElectroMart %c v1.0.0 ',
+    'background: #2563eb; color: white; font-size: 14px; padding: 4px 8px; border-radius: 4px 0 0 4px; font-weight: bold;',
+    'background: #1e293b; color: white; font-size: 14px; padding: 4px 8px; border-radius: 0 4px 4px 0;'
 );
