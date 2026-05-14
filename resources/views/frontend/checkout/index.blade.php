@@ -174,8 +174,8 @@
     {{-- login modal start --}}
 
     <!-- Modal -->
-    <div class="modal fade quick-view-modal" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade quick-view-modal" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form action="" id="loginForm">
@@ -196,6 +196,9 @@
                                 aria-describedby="passwordHelp">
                             <span id="password_error" class="text-danger"></span>
                         </div>
+                        {{-- registration link --}}
+                        <p class="mb-0">Don't have an account? <a href="javascript:void(0)" class="text-primary"
+                                data-bs-toggle="modal" data-bs-target="#registerModal">Register</a></p>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -206,6 +209,54 @@
         </div>
     </div>
     {{-- login modal end --}}
+
+    {{-- register modal start --}}
+    <div class="modal fade" id="registerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Registration</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                aria-describedby="nameHelp">
+                            <span id="reg_name_error" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                aria-describedby="emailHelp">
+                            <span id="reg_email_error" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                aria-describedby="passwordHelp">
+                            <span id="reg_password_error" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="password_confirmation"
+                                name="password_confirmation" aria-describedby="passwordConfirmationHelp">
+                            <span id="reg_password_confirmation_error" class="text-danger"></span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p class="mb-0">Already have an account? <a href="javascript:void(0)" class="text-primary"
+                                    data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></p>
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- register modal end --}}
 @endsection
 
 @push('page_scripts')
@@ -239,6 +290,43 @@
                         $('#email_error').text(xhr.responseJSON?.errors?.email);
                         $('#password_error').text(xhr.responseJSON?.errors?.password);
 
+                    }
+                });
+            });
+
+            // register
+
+            $('#registerForm').on('submit', function(e) {
+                e.preventDefault();
+
+                var $btn = $(this).find('button[type="submit"]');
+                var originalText = $btn.html();
+                $btn.html('<span class="spinner-border spinner-border-sm me-2"></span> Registering...')
+                    .prop(
+                        'disabled', true);
+
+                $.ajax({
+                    url: '{{ route('register') }}',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        window.location.href = '{{ route('checkout.index') }}';
+                        showToastMsg('Registration successful!');
+                        $("#reg_name_error").text('');
+                        $("#reg_email_error").text('');
+                        $("#reg_password_error").text('');
+                        $("#reg_password_confirmation_error").text('');
+                    },
+                    error: function(xhr) {
+                        $btn.html(originalText).prop('disabled', false);
+                        $('#reg_name_error').text(xhr.responseJSON?.errors?.name);
+                        $('#reg_email_error').text(xhr.responseJSON?.errors?.email);
+                        $('#reg_password_error').text(xhr.responseJSON?.errors?.password);
+                        $('#reg_password_confirmation_error').text(xhr.responseJSON?.errors
+                            ?.password_confirmation);
                     }
                 });
             });

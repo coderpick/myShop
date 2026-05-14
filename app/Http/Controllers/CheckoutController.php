@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Raziul\Sslcommerz\Facades\Sslcommerz;
 
 class CheckoutController extends Controller
 {
@@ -84,7 +85,7 @@ class CheckoutController extends Controller
             }
 
             $order = Order::create([
-                'order_number' => 'ORD-'.strtoupper(Str::random(8)),
+                'order_number' => Order::generateInvoiceNumber(),
                 'user_id' => Auth::id(),
                 'quantity' => array_sum(array_column($cart, 'quantity')),
                 'total_price' => $total,
@@ -112,26 +113,24 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            /*   if ($request->payment_method === 'online') {
+            if ($request->payment_method === 'online') {
 
-                  $transactionId = 'TXN-'.strtoupper(Str::random(10));
-                  $order->update(['transaction_id' => $transactionId]);
+                $transactionId = 'TXN-'.strtoupper(Str::random(10));
+                $order->update(['transaction_id' => $transactionId]);
 
-                  $response = Sslcommerz::setOrder($total, $transactionId, 'Products')
-                      ->setCustomer($customerName, $customerEmail, $customerPhone)
-                      ->setShippingInfo($order->quantity, $order->shipping_address)
-                      ->makePayment();
+                $response = Sslcommerz::setOrder($total, $transactionId, 'Products')
+                    ->setCustomer($user->name, $user->email, $user->phone)
+                    ->setShippingInfo($order->quantity, $user->address)
+                    ->makePayment();
 
-                  if ($response->success()) {
-                      return redirect($response->gatewayPageURL());
-                  } else {
-                      return redirect()->route('cart.index')->with('error', 'Failed to initiate payment gateway.');
-                  }
-              } */
+                if ($response->success()) {
+                    return redirect($response->gatewayPageURL());
+                } else {
+                    return redirect()->route('cart.index')->with('error', 'Failed to initiate payment gateway.');
+                }
+            }
 
-            // return redirect()->route('order.success', $order->id);
-
-            return redirect()->uri('/')->with('success', 'Order placed successfully!');
+            return redirect()->route('sslc.success');
 
         } catch (\Exception $e) {
 
