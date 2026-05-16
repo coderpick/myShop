@@ -36,16 +36,21 @@ class OrderController extends Controller
         $orders = $query->paginate(10)->withQueryString();
 
         $stats = Order::selectRaw("
-            COUNT(*) as total,
-            SUM(CASE WHEN status = '".OrderStatus::PENDING->value."' THEN 1 ELSE 0 END) as pending,
-            SUM(CASE WHEN status = '".OrderStatus::PROCESSING->value."' THEN 1 ELSE 0 END) as processing,
-            SUM(CASE WHEN status = '".OrderStatus::DELIVERED->value."' THEN 1 ELSE 0 END) as delivered
-        ")->first();
+                    COUNT(*) as total,
+                    SUM(CASE WHEN status = '".OrderStatus::PENDING->value."' THEN 1 ELSE 0 END) as pending,
+                    SUM(CASE WHEN status = '".OrderStatus::PROCESSING->value."' THEN 1 ELSE 0 END) as processing,
+                    SUM(CASE WHEN status = '".OrderStatus::DELIVERED->value."' THEN 1 ELSE 0 END) as delivered
+                ")->first();
 
         $totalOrders = $stats->total;
         $pendingOrders = $stats->pending;
         $processingOrders = $stats->processing;
         $deliveredOrders = $stats->delivered;
+
+        /*     $totalOrders = Order::count();
+            $pendingOrders = Order::where('status', OrderStatus::PENDING)->count();
+            $processingOrders = Order::where('status', OrderStatus::PROCESSING)->count();
+            $deliveredOrders = Order::where('status', OrderStatus::DELIVERED)->count(); */
 
         return view('admin.order.index', compact('orders', 'totalOrders', 'pendingOrders', 'processingOrders', 'deliveredOrders'));
     }
@@ -106,6 +111,6 @@ class OrderController extends Controller
         $pdf = Pdf::loadView('admin.order.invoice', compact('order'))
             ->setPaper('a4', 'portrait');
 
-        return $pdf->stream('invoice-'.$order->order_number.'.pdf');
+        return $pdf->download('invoice-'.$order->order_number.'.pdf');
     }
 }

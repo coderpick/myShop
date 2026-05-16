@@ -96,7 +96,7 @@
                                             {{ substr($order->user->name ?? 'U', 0, 1) }}</div>
                                         <div>
                                             <div class="customer-name">{{ $order->user->name ?? 'U' }}</div>
-                                            <div class="customer-email">{{ $order->user->email }}</div>
+                                            <div class="customer-email">{{ $order->user->phone ?? '' }}</div>
                                         </div>
                                     </div>
                                 </td>

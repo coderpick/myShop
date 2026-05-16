@@ -130,7 +130,7 @@ class CheckoutController extends Controller
                 }
             }
 
-            return redirect()->route('sslc.success');
+            return view('frontend.payment.success', compact('order'));
 
         } catch (\Exception $e) {
 

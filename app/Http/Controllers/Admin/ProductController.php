@@ -182,6 +182,9 @@ class ProductController extends Controller
         $this->delete($image->image_path); /* remove image from uploads folder */
         $image->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Image deleted successfully']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Image deleted successfully',
+        ]);
     }
 }
