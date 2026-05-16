@@ -1,47 +1,82 @@
-@extends('layouts.app')
+@extends('layouts.frontend.HomeLayout')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+    <section class="auth-wrapper py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="text-center mb-4">
+                                <h2 class="fw-bold mb-1">Reset Password</h2>
+                                <p class="text-muted">Enter your email to receive a reset link</p>
                             </div>
-                        </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
+                            @if (session('status'))
+                                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                                    {{ session('status') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
+                            <form method="POST" action="{{ route('password.email') }}">
+                                @csrf
+                                <div class="mb-4">
+                                    <label class="form-label fw-600">Email Address</label>
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope text-muted"></i></span>
+                                        <input type="email" name="email" class="form-control bg-light border-start-0 @error('email') is-invalid @enderror" 
+                                            placeholder="name@example.com" value="{{ old('email') }}" required autofocus>
+                                    </div>
+                                    @error('email')
+                                        <span class="text-danger small mt-1 d-block">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow-sm">
+                                    Send Reset Link <i class="bi bi-send ms-2"></i>
                                 </button>
+                            </form>
+
+                            <div class="text-center mt-5">
+                                <p class="text-muted mb-0">Remembered your password? 
+                                    <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">Sign In</a>
+                                </p>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+
+    <style>
+        .auth-wrapper {
+            background-color: #f8f9fa;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+        .fw-600 { font-weight: 600; }
+        .card { border-radius: 1.25rem; }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #0d6efd;
+        }
+        .input-group-text {
+            border-radius: 0.75rem 0 0 0.75rem;
+        }
+        .form-control {
+            border-radius: 0 0.75rem 0.75rem 0;
+        }
+        .btn-primary {
+            border-radius: 0.75rem;
+            background: linear-gradient(45deg, #0d6efd, #0a58ca);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #0a58ca, #084298);
+            transform: translateY(-1px);
+        }
+    </style>
 @endsection

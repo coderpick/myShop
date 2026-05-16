@@ -32,13 +32,13 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <div class="stat-label">Total Sales</div>
-                            <div class="stat-value">$48,295</div>
+                            <div class="stat-value">৳{{ number_format($totalSales, 2) }}</div>
                             <div class="stat-trend up">
-                                <i class="bi bi-arrow-up"></i> 12.5% from last month
+                                <i class="bi bi-arrow-up"></i> Live Data
                             </div>
                         </div>
                         <div class="stat-icon">
-                            <i class="bi bi-currency-dollar"></i>
+                            <i class="bi bi-currency-exchange"></i>
                         </div>
                     </div>
                 </div>
@@ -48,9 +48,9 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <div class="stat-label">Total Orders</div>
-                            <div class="stat-value">1,284</div>
+                            <div class="stat-value">{{ number_format($totalOrders) }}</div>
                             <div class="stat-trend up">
-                                <i class="bi bi-arrow-up"></i> 8.2% from last month
+                                <i class="bi bi-arrow-up"></i> Live Data
                             </div>
                         </div>
                         <div class="stat-icon">
@@ -64,9 +64,9 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <div class="stat-label">Total Products</div>
-                            <div class="stat-value">356</div>
+                            <div class="stat-value">{{ number_format($totalProducts) }}</div>
                             <div class="stat-trend up">
-                                <i class="bi bi-arrow-up"></i> 24 added this month
+                                <i class="bi bi-arrow-up"></i> Live Data
                             </div>
                         </div>
                         <div class="stat-icon">
@@ -80,9 +80,9 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
                             <div class="stat-label">Total Customers</div>
-                            <div class="stat-value">2,847</div>
-                            <div class="stat-trend down">
-                                <i class="bi bi-arrow-down"></i> 3.1% from last month
+                            <div class="stat-value">{{ number_format($totalCustomers) }}</div>
+                            <div class="stat-trend up">
+                                <i class="bi bi-arrow-up"></i> Live Data
                             </div>
                         </div>
                         <div class="stat-icon">
@@ -132,7 +132,7 @@
                 <div class="data-table-wrapper">
                     <div class="data-table-header">
                         <h6><i class="bi bi-clock-history me-2"></i>Recent Orders</h6>
-                        <a href="orders.html" class="btn btn-admin-outline btn-sm">View All</a>
+                        <a href="{{ route('admin.order.index') }}" class="btn btn-admin-outline btn-sm">View All</a>
                     </div>
                     <div class="table-responsive">
                         <table class="table admin-table">
@@ -146,20 +146,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><a href="order-detail.html" class="fw-600 text-primary">#ORD-1234</a>
-                                    </td>
-                                    <td>
-                                        <div class="customer-cell">
-                                            <div class="customer-avatar">JD</div>
-                                            <span class="customer-name">John Doe</span>
-                                        </div>
-                                    </td>
-                                    <td class="fw-600">$1,299.00</td>
-                                    <td><span class="status-badge processing"><span class="dot"></span>
-                                            Processing</span></td>
-                                    <td class="text-muted">Dec 15, 2024</td>
-                                </tr>
+                                @forelse ($recentOrders as $order)
+                                    <tr>
+                                        <td><a href="{{ route('admin.order.show', $order->id) }}" class="fw-600 text-primary">#{{ $order->order_number }}</a>
+                                        </td>
+                                        <td>
+                                            <div class="customer-cell">
+                                                <div class="customer-avatar {{ ['', 'green', 'orange', 'blue', 'red'][rand(0, 4)] }}">{{ substr($order->user->name ?? 'U', 0, 1) }}</div>
+                                                <span class="customer-name">{{ $order->user->name ?? 'Guest' }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="fw-600">৳{{ number_format($order->total_price, 2) }}</td>
+                                        <td>
+                                            <span class="badge {{ $order->status->badge() }} bg-opacity-10 {{ $order->status->text() }}" style="font-size: 0.75rem;">
+                                                {{ strtoupper($order->status->value) }}
+                                            </span>
+                                        </td>
+                                        <td class="text-muted">{{ $order->created_at->format('M d, Y') }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4">No recent orders found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
                                 <tr>
                                     <td><a href="order-detail.html" class="fw-600 text-primary">#ORD-1233</a>
                                     </td>
@@ -299,12 +309,10 @@
             new Chart(salesCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    labels: {!! json_encode($salesLabels) !!},
                     datasets: [{
                             label: 'Revenue',
-                            data: [18000, 22000, 19500, 28000, 32000, 29000, 35000, 38000, 42000, 39000, 45000,
-                                48295
-                            ],
+                            data: {!! json_encode($salesValues) !!},
                             borderColor: '#4f46e5',
                             backgroundColor: 'rgba(79, 70, 229, 0.08)',
                             borderWidth: 2.5,
@@ -313,22 +321,6 @@
                             pointRadius: 0,
                             pointHoverRadius: 6,
                             pointHoverBackgroundColor: '#4f46e5',
-                            pointHoverBorderColor: '#fff',
-                            pointHoverBorderWidth: 2,
-                        },
-                        {
-                            label: 'Orders',
-                            data: [12000, 15000, 13500, 20000, 18000, 22000, 25000, 27000, 30000, 28000, 33000,
-                                36000
-                            ],
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.08)',
-                            borderWidth: 2.5,
-                            fill: true,
-                            tension: 0.4,
-                            pointRadius: 0,
-                            pointHoverRadius: 6,
-                            pointHoverBackgroundColor: '#10b981',
                             pointHoverBorderColor: '#fff',
                             pointHoverBorderWidth: 2,
                         }
@@ -367,7 +359,7 @@
                             cornerRadius: 8,
                             callbacks: {
                                 label: function(ctx) {
-                                    return ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString();
+                                    return ctx.dataset.label + ': ৳' + ctx.parsed.y.toLocaleString();
                                 }
                             }
                         }
@@ -396,7 +388,7 @@
                                 },
                                 color: '#94a3b8',
                                 callback: function(value) {
-                                    return '$' + (value / 1000) + 'k';
+                                    return '৳' + (value / 1000) + 'k';
                                 }
                             }
                         }
@@ -416,9 +408,9 @@
             new Chart(catCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Smartphones', 'Laptops', 'Audio', 'Wearables', 'Gaming', 'Other'],
+                    labels: {!! json_encode($categoryLabels) !!},
                     datasets: [{
-                        data: [35, 25, 15, 10, 10, 5],
+                        data: {!! json_encode($categoryValues) !!},
                         backgroundColor: ['#4f46e5', '#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#94a3b8'],
                         borderWidth: 0,
                         hoverOffset: 8
@@ -455,7 +447,7 @@
                             cornerRadius: 8,
                             callbacks: {
                                 label: function(ctx) {
-                                    return ' ' + ctx.label + ': ' + ctx.parsed + '%';
+                                    return ' ' + ctx.label + ': ' + ctx.parsed;
                                 }
                             }
                         }

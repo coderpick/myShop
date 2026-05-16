@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -10,22 +11,11 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'order_number',
-        'user_id',
-        'customer_name',
-        'customer_email',
-        'customer_phone',
-        'shipping_address',
-        'city',
-        'state',
-        'postal_code',
-        'quantity',
-        'total_price',
-        'payment_method',
-        'payment_status',
-        'transaction_id',
-        'notes',
-        'status',
+        'user_id', 'quantity', 'total_price', 'order_number', 'payment_method', 'payment_status', 'transaction_id', 'notes', 'status',
+    ];
+
+    protected $casts = [
+        'status' => OrderStatus::class,
     ];
 
     public function user()
@@ -61,6 +51,7 @@ class Order extends Model
                     $nextNumber = $number + 1;
                 }
             }
+
             // Generate the padded number
             return $prefix.'-'.str_pad($nextNumber, $idLength, '0', STR_PAD_LEFT);
         });

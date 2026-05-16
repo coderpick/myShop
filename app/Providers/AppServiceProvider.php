@@ -26,12 +26,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();    
 
-        Facades\View::composer('*', function (View $view) {
+        // Targeted composers instead of '*' to avoid duplicate queries for every view partial
+        Facades\View::composer(['layouts.frontend.partials.category_nav', 'layouts.frontend.partials.footer','layouts.frontend.partials.mobile_nav'], function (View $view) {
             $navCategories = Category::where('is_show_in_menu', true)->get();
             $view->with('navCategories', $navCategories);
         });
 
-           Facades\View::composer('layouts.frontend.partials.category_nav', function (View $view) {
+        Facades\View::composer('layouts.frontend.partials.category_nav', function (View $view) {
             $categoriesWithSub = Category::with('subCategories')->get();
             $view->with('categoriesWithSub', $categoriesWithSub);
         });

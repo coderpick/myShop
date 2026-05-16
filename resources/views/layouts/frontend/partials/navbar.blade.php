@@ -42,7 +42,8 @@
                                <a href="#" class="dropdown-item"
                                    disabled><strong>{{ Auth::user()->name }}</strong></a>
                            </li>
-                           <li><a class="dropdown-item" href="#"><i class="bi bi-bag me-2"></i>My Orders</a></li>
+                           <li><a class="dropdown-item" href="{{ route('customer.dashboard') }}"><i
+                                       class="bi bi-bag me-2"></i>My Dashboard</a></li>
                            <li><a class="dropdown-item" href="#"><i class="bi bi-heart me-2"></i>Wishlist</a></li>
                            <li>
                                <a class="dropdown-item" href="{{ route('logout') }}"

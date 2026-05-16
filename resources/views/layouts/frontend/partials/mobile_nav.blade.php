@@ -18,24 +18,35 @@
               <a href="{{ uri('/') }}" class="list-group-item list-group-item-action"><i
                       class="bi bi-house me-2"></i>
                   Home</a>
-              <a href="shop.html" class="list-group-item list-group-item-action"><i class="bi bi-shop me-2"></i>
-                  Shop</a>
-              <a href="shop.html" class="list-group-item list-group-item-action"><i class="bi bi-phone me-2"></i>
-                  Mobiles</a>
-              <a href="shop.html" class="list-group-item list-group-item-action"><i class="bi bi-laptop me-2"></i>
-                  Laptops</a>
-              <a href="shop.html" class="list-group-item list-group-item-action"><i class="bi bi-headphones me-2"></i>
-                  Audio</a>
-              <a href="shop.html" class="list-group-item list-group-item-action"><i class="bi bi-tv me-2"></i>
-                  TVs</a>
-              <a href="shop.html" class="list-group-item list-group-item-action"><i class="bi bi-smartwatch me-2"></i>
-                  Wearables</a>
-              <a href="shop.html" class="list-group-item list-group-item-action"><i class="bi bi-lightning me-2"></i>
+              @forelse ($navCategories as $category)
+                  <a href="{{ route('shop.category', $category->slug) }}"
+                      class="list-group-item list-group-item-action">
+                      <i class="bi bi-{{ $category->icon }} me-2"></i>
+                      {{ $category->name }}</a>
+              @empty
+              @endforelse
+
+              <a href="" class="list-group-item list-group-item-action"><i class="bi bi-lightning me-2"></i>
                   Deals</a>
-              <a href="cart.html" class="list-group-item list-group-item-action"><i class="bi bi-cart3 me-2"></i>
+              <a href="{{ route('cart.index') }}" class="list-group-item list-group-item-action"><i
+                      class="bi bi-cart3 me-2"></i>
                   Cart</a>
-              <a href="login.html" class="list-group-item list-group-item-action"><i class="bi bi-person me-2"></i>
-                  Account</a>
+              @auth
+                  <a href="{{ route('customer.dashboard') }}" class="list-group-item list-group-item-action"><i
+                          class="bi bi-person me-2"></i>
+                      Dashbaord
+                  </a>
+                  <form action="{{ route('logout') }}" method="post">
+                      @csrf
+                      <button type="submit" class="list-group-item list-group-item-action"><i
+                              class="bi bi-person me-2"></i>
+                          Logout</button>
+                  </form>
+              @else
+                  <a href="{{ route('login') }}" class="list-group-item list-group-item-action"><i
+                          class="bi bi-person me-2"></i>
+                      Login</a>
+              @endauth
           </ul>
       </div>
   </div>

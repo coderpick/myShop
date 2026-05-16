@@ -48,30 +48,36 @@
                </li>
 
                <li class="sidebar-nav-item">
-                   <a href="#productSubmenu" class="sidebar-nav-link {{ Request::is('admin/product*') ? 'active' : '' }}" data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/product*') ? 'true' : 'false' }}">
+                   <a href="#productSubmenu"
+                       class="sidebar-nav-link {{ Request::is('admin/product*') ? 'active' : '' }}"
+                       data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/product*') ? 'true' : 'false' }}">
                        <i class="bi bi-box-seam"></i>
                        <span class="nav-text">Products</span>
                        <i class="bi bi-chevron-right arrow"></i>
                    </a>
-                   <ul class="sidebar-submenu collapse {{ Request::is('admin/product*') ? 'show' : '' }}" id="productSubmenu">
-                       <li><a href="{{ route('admin.product.index') }}" class="sidebar-nav-link {{ Request::routeIs('admin.product.index') ? 'active' : '' }}"><span
+                   <ul class="sidebar-submenu collapse {{ Request::is('admin/product*') ? 'show' : '' }}"
+                       id="productSubmenu">
+                       <li><a href="{{ route('admin.product.index') }}"
+                               class="sidebar-nav-link {{ Request::routeIs('admin.product.index') ? 'active' : '' }}"><span
                                    class="nav-text">All
                                    Products</span></a></li>
-                       <li><a href="{{ route('admin.product.create') }}" class="sidebar-nav-link {{ Request::routeIs('admin.product.create') ? 'active' : '' }}"><span
+                       <li><a href="{{ route('admin.product.create') }}"
+                               class="sidebar-nav-link {{ Request::routeIs('admin.product.create') ? 'active' : '' }}"><span
                                    class="nav-text">Add
                                    Product</span></a></li>
                    </ul>
                </li>
 
                <li class="sidebar-nav-item">
-                   <a href="orders.html" class="sidebar-nav-link">
+                   <a href="{{ route('admin.order.index') }}"
+                       class="sidebar-nav-link {{ Request::is('admin/order*') ? 'active' : '' }}">
                        <i class="bi bi-cart-check"></i>
-                       <span class="nav-text">Orders</span>
-                       <span class="badge bg-danger nav-text">12</span>
+                       <span class="nav-text">Orders</span>                   
                    </a>
                </li>
                <li class="sidebar-nav-item">
-                   <a href="customers.html" class="sidebar-nav-link">
+                   <a href="{{ route('admin.customer.index') }}"
+                       class="sidebar-nav-link {{ Request::is('admin/customer*') ? 'active' : '' }}">
                        <i class="bi bi-people"></i>
                        <span class="nav-text">Customers</span>
                    </a>
@@ -110,12 +116,12 @@
                        <span class="nav-text">Roles & Permissions</span>
                    </a>
                </li> --}}
-               <li class="sidebar-nav-item">
+               {{-- <li class="sidebar-nav-item">
                    <a href="#" class="sidebar-nav-link">
                        <i class="bi bi-folder2-open"></i>
                        <span class="nav-text">File Manager</span>
                    </a>
-               </li>
+               </li> --}}
            </ul>
        </div>
 

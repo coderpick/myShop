@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\AjaxController;
@@ -38,7 +40,17 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(funct
     Route::resource('brand', BrandController::class)->except('show');
     Route::resource('product', ProductController::class);
     Route::delete('product-image-delete', [ProductController::class, 'deleteImage'])->name('product-image.destroy');
+    /* order manage route */
 
+    Route::get('order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('order/{id}', [OrderController::class, 'show'])->name('order.show');
+    Route::post('order/{id}/status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
+    Route::get('order/{id}/invoice', [OrderController::class, 'generateInvoice'])->name('order.generateInvoice');
+
+    /* customer */
+    Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
+    Route::get('customer/{id}', [CustomerController::class, 'show'])->name('customer.show');
+    Route::delete('customer/{id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
 });
 
 /* get subcategory by category id start */
@@ -76,6 +88,9 @@ Route::controller(SslCommerzPaymentController::class)
     });
 
 /* customer dashboard */
-Route::prefix('customer')->as('customer.')->middleware(['auth'])->group(function () {
-    Route::get('dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth'])->prefix('customer')->name('customer.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\CustomerDashboardController::class, 'index'])->name('dashboard');
+    Route::put('/profile/update', [App\Http\Controllers\CustomerDashboardController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/order/{id}', [App\Http\Controllers\CustomerDashboardController::class, 'orderDetails'])->name('order.details');
+    Route::get('/order/{id}/invoice', [App\Http\Controllers\CustomerDashboardController::class, 'downloadInvoice'])->name('order.invoice');
 });
