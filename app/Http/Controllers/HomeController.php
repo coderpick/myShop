@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\FlashDealProduct;
 use App\Models\Product;
+use App\Models\Slider;
+use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
@@ -19,6 +22,14 @@ class HomeController extends Controller
             ->get();
         $brands = Brand::get();
 
-        return view('home', compact('categories', 'trendingProducts', 'brands'));
+        $sliders = Slider::where('status', true)->get();
+        /* flash deal products */
+        $flashDealProducts = FlashDealProduct::where('start_date', '<=', Carbon::now())
+            ->where('end_date', '>=', Carbon::now())
+            ->with('product', 'product.images')
+            ->limit(6)
+            ->get();
+
+        return view('home', compact('categories', 'trendingProducts', 'brands', 'sliders', 'flashDealProducts'));
     }
 }

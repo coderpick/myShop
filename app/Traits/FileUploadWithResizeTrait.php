@@ -66,7 +66,7 @@ trait FileUploadWithResizeTrait
 
     public static function delete($file)
     {
-        if (file_exists(public_path($file))) {
+        if ($file && file_exists(public_path($file))) {
             unlink(public_path($file));
         }
     }

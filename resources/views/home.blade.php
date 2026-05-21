@@ -7,110 +7,34 @@
         <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
             <!-- Indicators -->
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+                @forelse ($sliders as $slider)
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $loop->index }}"
+                        class="{{ $loop->first ? 'active' : '' }}"></button>
+                @empty
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                @endforelse
             </div>
 
             <div class="carousel-inner">
-                <!-- Slide 1 -->
-                <div class="carousel-item active">
-                    <div class="hero-slide hero-slide-1">
+                @forelse ($sliders as $slider)
+                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                         <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-lg-6">
-                                    <div class="hero-content">
-                                        <span class="badge-deal">🔥 HOT DEAL</span>
-                                        <h1>iPhone 15 Pro Max</h1>
-                                        <p>Titanium design. A17 Pro chip. Powerful camera system. Experience the
-                                            ultimate smartphone.</p>
-                                        <div class="price-tag">
-                                            $999 <span class="original">$1,199</span>
-                                        </div>
-                                        <a href="product.html" class="btn btn-secondary-custom btn-lg me-2">
-                                            <i class="bi bi-cart-plus me-2"></i>Shop Now
-                                        </a>
-                                        <a href="shop.html" class="btn btn-outline-light btn-lg">Learn More</a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 d-none d-lg-block">
-                                    <div class="hero-image">
-                                        <img src="assets/images/hero_iphone.png" alt="iPhone 15 Pro Max">
-                                    </div>
-                                </div>
-                            </div>
+                            <a href="{{ $slider->link ?? '#' }}">
+                                <img class="w-100" src="{{ asset($slider->image) }}" alt="{{ $slider->title }}">
+                            </a>
                         </div>
                     </div>
-                </div>
-
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                    <div class="hero-slide hero-slide-2">
+                @empty
+                    <div class="carousel-item active">
                         <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-lg-6">
-                                    <div class="hero-content">
-                                        <span class="badge-deal">⚡ NEW ARRIVAL</span>
-                                        <h1>MacBook Pro M3</h1>
-                                        <p>Supercharged by M3 Pro and M3 Max. The most advanced chips ever built for a
-                                            personal computer.</p>
-                                        <div class="price-tag">
-                                            $1,599 <span class="original">$1,999</span>
-                                        </div>
-                                        <a href="product.html" class="btn btn-secondary-custom btn-lg me-2">
-                                            <i class="bi bi-cart-plus me-2"></i>Shop Now
-                                        </a>
-                                        <a href="shop.html" class="btn btn-outline-light btn-lg">Learn More</a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 d-none d-lg-block">
-                                    <div class="hero-image">
-                                        <img src="assets/images/hero_macbook.png" alt="MacBook Pro M3">
-                                    </div>
-                                </div>
-                            </div>
+                            <a href="#">
+                                <img class="w-100" src="{{ asset('assets/frontend/images/default-slider-bg.jpg') }}"
+                                    alt="Placeholder">
+                            </a>
                         </div>
                     </div>
-                </div>
-
-                <!-- Slide 3 -->
-                <div class="carousel-item">
-                    <div class="hero-slide hero-slide-3">
-                        <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-lg-6">
-                                    <div class="hero-content">
-                                        <span class="badge-deal">🎧 BEST SELLER</span>
-                                        <h1>Sony WH-1000XM5</h1>
-                                        <p>Industry-leading noise cancellation with exceptional sound quality. Your
-                                            music, your way.</p>
-                                        <div class="price-tag">
-                                            $299 <span class="original">$399</span>
-                                        </div>
-                                        <a href="product.html" class="btn btn-secondary-custom btn-lg me-2">
-                                            <i class="bi bi-cart-plus me-2"></i>Shop Now
-                                        </a>
-                                        <a href="shop.html" class="btn btn-outline-light btn-lg">Learn More</a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 d-none d-lg-block">
-                                    <div class="hero-image">
-                                        <img src="assets/images/hero_sony.png" alt="Sony WH-1000XM5">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
-
-            <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                <i class="bi bi-chevron-left"></i>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                <i class="bi bi-chevron-right"></i>
-            </button>
         </div>
     </section>
 
@@ -224,7 +148,8 @@
                                 <button class="action-btn" title="Add to Wishlist" onclick="toggleWishlist(this)">
                                     <i class="bi bi-heart"></i>
                                 </button>
-                                <button class="action-btn" title="Quick View" onclick="openQuickView({{ $trendingProduct->id }})">
+                                <button class="action-btn" title="Quick View"
+                                    onclick="openQuickView({{ $trendingProduct->id }})">
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
@@ -272,161 +197,86 @@
             </div>
         </div>
     </section>
-
-    <!-- ============ DEALS SECTION ============ -->
-    <section class="deals-section section-padding">
-        <div class="container">
-            <div class="text-center mb-4">
-                <h2 class="section-title text-white">🔥 Flash Deals</h2>
-                <p class="text-light opacity-75">Hurry! These deals won't last long</p>
-            </div>
-
-            <div class="row g-4">
-                <!-- Deal 1 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="deal-card">
-                        <div class="text-center mb-3">
-                            <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?q=80&w=1000&auto=format&fit=crop"
-                                alt="Dell XPS" style="max-height: 150px;">
-                        </div>
-                        <h5 class="text-white fw-bold">Dell XPS 15 Laptop</h5>
-                        <p class="text-light opacity-75 small mb-2">Intel i9, 32GB RAM, 1TB SSD</p>
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="fs-4 fw-bold text-warning">$1,499</span>
-                            <span class="text-decoration-line-through text-light opacity-50">$1,999</span>
-                            <span class="badge bg-danger">-25%</span>
-                        </div>
-                        <div class="countdown-timer" data-target="2024-12-31">
-                            <div class="countdown-item">
-                                <span class="number" data-days>12</span>
-                                <span class="label">Days</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number" data-hours>08</span>
-                                <span class="label">Hours</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number" data-minutes>45</span>
-                                <span class="label">Mins</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number" data-seconds>30</span>
-                                <span class="label">Secs</span>
-                            </div>
-                        </div>
-                        <!-- Stock Progress -->
-                        <div class="mt-3">
-                            <div class="d-flex justify-content-between small text-light opacity-75 mb-1">
-                                <span>Sold: 87</span>
-                                <span>Available: 13</span>
-                            </div>
-                            <div class="progress" style="height: 6px;">
-                                <div class="progress-bar bg-warning" style="width: 87%;"></div>
-                            </div>
-                        </div>
-                        <a href="product.html" class="btn btn-secondary-custom w-100 mt-3">
-                            <i class="bi bi-lightning me-1"></i> Grab Deal
-                        </a>
-                    </div>
+    @if ($flashDealProducts->count() > 0)
+        <!-- ============ DEALS SECTION ============ -->
+        <section class="deals-section section-padding">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2 class="section-title text-white">🔥 Flash Deals</h2>
+                    <p class="text-light opacity-75">Hurry! These deals won't last long</p>
                 </div>
 
-                <!-- Deal 2 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="deal-card">
-                        <div class="text-center mb-3">
-                            <img src="https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?q=80&w=1000&auto=format&fit=crop"
-                                alt="Samsung TV" style="max-height: 150px;">
-                        </div>
-                        <h5 class="text-white fw-bold">Samsung 65" 4K Smart TV</h5>
-                        <p class="text-light opacity-75 small mb-2">Crystal UHD, HDR, Smart Hub</p>
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="fs-4 fw-bold text-warning">$699</span>
-                            <span class="text-decoration-line-through text-light opacity-50">$999</span>
-                            <span class="badge bg-danger">-30%</span>
-                        </div>
-                        <div class="countdown-timer">
-                            <div class="countdown-item">
-                                <span class="number">05</span>
-                                <span class="label">Days</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number">14</span>
-                                <span class="label">Hours</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number">22</span>
-                                <span class="label">Mins</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number">55</span>
-                                <span class="label">Secs</span>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <div class="d-flex justify-content-between small text-light opacity-75 mb-1">
-                                <span>Sold: 62</span>
-                                <span>Available: 38</span>
-                            </div>
-                            <div class="progress" style="height: 6px;">
-                                <div class="progress-bar bg-warning" style="width: 62%;"></div>
-                            </div>
-                        </div>
-                        <a href="product.html" class="btn btn-secondary-custom w-100 mt-3">
-                            <i class="bi bi-lightning me-1"></i> Grab Deal
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Deal 3 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="deal-card">
-                        <div class="text-center mb-3">
-                            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000&auto=format&fit=crop"
-                                alt="Canon Camera" style="max-height: 150px;">
-                        </div>
-                        <h5 class="text-white fw-bold">Canon EOS R6 Mark II</h5>
-                        <p class="text-light opacity-75 small mb-2">24.2MP, 4K60p, Body Only</p>
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="fs-4 fw-bold text-warning">$1,999</span>
-                            <span class="text-decoration-line-through text-light opacity-50">$2,499</span>
-                            <span class="badge bg-danger">-20%</span>
-                        </div>
-                        <div class="countdown-timer">
-                            <div class="countdown-item">
-                                <span class="number">03</span>
-                                <span class="label">Days</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number">19</span>
-                                <span class="label">Hours</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number">33</span>
-                                <span class="label">Mins</span>
-                            </div>
-                            <div class="countdown-item">
-                                <span class="number">10</span>
-                                <span class="label">Secs</span>
+                <div class="row g-4">
+                    @forelse ($flashDealProducts as $flashDealProduct)
+                        <div class="col-md-6 col-lg-4">
+                            <div class="deal-card">
+                                <div class="text-center mb-3">
+                                    <img src="{{ asset($flashDealProduct->product->images->first()->image_path) }}"
+                                        alt="{{ $flashDealProduct->product->name }}" style="max-height: 150px;">
+                                </div>
+                                <h5 class="text-white fw-bold">{{ $flashDealProduct->product->name }}</h5>
+                                <p class="text-light opacity-75 small mb-2">
+                                    {{ $flashDealProduct->product->short_description }}
+                                </p>
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <div class="product-price">
+                                        @if ($flashDealProduct->product->discount > 0 && $flashDealProduct->product->discount_price > 0)
+                                            <span
+                                                class="current-price text-white">{{ $flashDealProduct->product->discount_price }}</span>
+                                            <span class="original-price">{{ $flashDealProduct->product->price }}</span>
+                                            <span
+                                                class="badge bg-danger">-{{ $flashDealProduct->product->discount }}%</span>
+                                        @else
+                                            <span
+                                                class="current-price text-white">{{ $flashDealProduct->product->price }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="countdown-timer" data-target="{{ $flashDealProduct->end_date }}">
+                                    {{-- date calculation --}}
+                                    @php
+                                        $endDate = \Carbon\Carbon::parse($flashDealProduct->end_date);
+                                        $diff = $endDate->diff(\Carbon\Carbon::now());
+                                    @endphp
+                                    <div class="countdown-item">
+                                        <span class="number" data-days>{{ $diff->days }}</span>
+                                        <span class="label">Days</span>
+                                    </div>
+                                    <div class="countdown-item">
+                                        <span class="number" data-hours>{{ $diff->hours }}</span>
+                                        <span class="label">Hours</span>
+                                    </div>
+                                    <div class="countdown-item">
+                                        <span class="number" data-minutes>{{ $diff->minutes }}</span>
+                                        <span class="label">Mins</span>
+                                    </div>
+                                    <div class="countdown-item">
+                                        <span class="number" data-seconds>{{ $diff->seconds }}</span>
+                                        <span class="label">Secs</span>
+                                    </div>
+                                </div>
+                                <!-- Stock Progress -->
+                                <div class="mt-3">
+                                    {{-- <div class="d-flex justify-content-between small text-light opacity-75 mb-1">
+                                        <span>Sold: 87</span>
+                                        <span>Available: 13</span>
+                                    </div>
+                                    <div class="progress" style="height: 6px;">
+                                        <div class="progress-bar bg-warning" style="width: 87%;"></div>
+                                    </div> --}}
+                                </div>
+                                <a href="javascript:void(0)" type="button" class="btn btn-secondary-custom w-100 mt-3"
+                                    onclick="addToCart({{ $flashDealProduct->product->id }})">
+                                    <i class="bi bi-lightning me-1"></i> Grab Deal
+                                </a>
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <div class="d-flex justify-content-between small text-light opacity-75 mb-1">
-                                <span>Sold: 45</span>
-                                <span>Available: 55</span>
-                            </div>
-                            <div class="progress" style="height: 6px;">
-                                <div class="progress-bar bg-warning" style="width: 45%;"></div>
-                            </div>
-                        </div>
-                        <a href="product.html" class="btn btn-secondary-custom w-100 mt-3">
-                            <i class="bi bi-lightning me-1"></i> Grab Deal
-                        </a>
-                    </div>
+                    @empty
+                    @endforelse
                 </div>
             </div>
-        </div>
-    </section>
-
+        </section>
+    @endif
     <!-- ============ BRAND CAROUSEL ============ -->
     <section class="brand-carousel-section">
         <div class="container">

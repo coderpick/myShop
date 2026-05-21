@@ -46,11 +46,20 @@
                        <span class="nav-text">Brands</span>
                    </a>
                </li>
+               <li class="sidebar-nav-item">
+                   <a href="{{ route('admin.slider.index') }}"
+                       class="sidebar-nav-link {{ Request::is('admin/slider*') ? 'active' : '' }}">
+                       <i class="bi bi-image"></i>
+                       <span class="nav-text">Sliders</span>
+                   </a>
+               </li>
+
 
                <li class="sidebar-nav-item">
                    <a href="#productSubmenu"
                        class="sidebar-nav-link {{ Request::is('admin/product*') ? 'active' : '' }}"
-                       data-bs-toggle="collapse" aria-expanded="{{ Request::is('admin/product*') ? 'true' : 'false' }}">
+                       data-bs-toggle="collapse"
+                       aria-expanded="{{ Request::is('admin/product*') ? 'true' : 'false' }}">
                        <i class="bi bi-box-seam"></i>
                        <span class="nav-text">Products</span>
                        <i class="bi bi-chevron-right arrow"></i>
@@ -69,10 +78,17 @@
                </li>
 
                <li class="sidebar-nav-item">
+                   <a href="{{ route('admin.flash_deal.index') }}"
+                       class="sidebar-nav-link {{ Request::is('admin/flash_deal*') ? 'active' : '' }}">
+                       <i class="bi bi-lightning-charge"></i>
+                       <span class="nav-text">Flash Deals</span>
+                   </a>
+               </li>
+               <li class="sidebar-nav-item">
                    <a href="{{ route('admin.order.index') }}"
                        class="sidebar-nav-link {{ Request::is('admin/order*') ? 'active' : '' }}">
                        <i class="bi bi-cart-check"></i>
-                       <span class="nav-text">Orders</span>                   
+                       <span class="nav-text">Orders</span>
                    </a>
                </li>
                <li class="sidebar-nav-item">

@@ -4,8 +4,10 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\FlashDealProductController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\CartController;
@@ -51,6 +53,11 @@ Route::prefix('admin')->as('admin.')->middleware(['auth', 'admin'])->group(funct
     Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
     Route::get('customer/{id}', [CustomerController::class, 'show'])->name('customer.show');
     Route::delete('customer/{id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
+
+    /* sliders */
+    Route::resource('slider', SliderController::class);
+    /* flash deal */
+    Route::resource('flash_deal', FlashDealProductController::class);
 });
 
 /* get subcategory by category id start */

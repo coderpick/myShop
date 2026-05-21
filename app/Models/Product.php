@@ -37,6 +37,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function flashDealProducts()
+    {
+        return $this->hasMany(FlashDealProduct::class);
+    }
+
     public function brand()
     {
         return $this->belongsTo(Brand::class);
@@ -52,14 +57,13 @@ class Product extends Model
         return $this->belongsTo(SubCategory::class);
     }
 
-    public function reviews()
-    {
-        
-    }
-    
+    /* stock check */
+
+
+    public function reviews() {}
+
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
     }
-    
 }

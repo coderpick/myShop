@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sliders', function (Blueprint $table) {
+        Schema::create('flash_deal_products', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable();
-            $table->string('image');
-            $table->string('link');
-            $table->boolean('status')->default(1);
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sliders');
+        Schema::dropIfExists('flash_deal_products');
     }
 };
